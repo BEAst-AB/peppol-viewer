@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dict:dictionary xmlns:dict="https://beast.se/dictionary">
+<dict:sv>
+    <entry key="Notes">Anteckningar</entry>
+    <entry key="Shipment">Transport</entry>
+    <entry key="Issue Date Time">Utgivningsdatum Tid</entry>
+    <entry key="Actual Delivery Date Time">Faktiskt leveransdatum Tid</entry>
+    <entry key="Estimated Delivery Date Time">Beräknat leveransdatum</entry>
+    <entry key="Supplier / Seller">Leverantör / säljare</entry>
+    <entry key="Customer / Buyer">Kund / köpare</entry>
+    <entry key="Carrier">Bärare</entry>
+    <entry key="Delivery">Leverans</entry>
+    <entry key="Despatch Location">Avsändande plats</entry>
+    <entry key="Expand or Collapse All">Expandera eller kollapsa alla</entry>
+    <entry key="ID">Id</entry>
+    <entry key="Item">Produkt</entry>
+    <entry key="Quantity">Kvantitet</entry>
+    <entry key="Reference Order">Referensorder</entry>
+    <entry key="Reference Order Line">Referensorderlinje</entry>
+    <entry key="Standard">Standardprodukt</entry>
+    <entry key="Seller">Säljareprodukt</entry>
+    <entry key="Manufacturer">Tillverkareprodukt</entry>
+</dict:sv>
+
+<dict:en>
+    <entry key="Notes">Notes</entry>
+    <entry key="Shipment">Shipment</entry>
+    <entry key="Issue Date Time">Issue Date Time</entry>
+    <entry key="Actual Delivery Date Time">Actual Delivery Date Time</entry>
+    <entry key="Estimated Delivery Date Time">Estimated Delivery Date Time</entry>
+    <entry key="Supplier / Seller">Supplier / Seller</entry>
+    <entry key="Customer / Buyer">Customer / Buyer</entry>
+    <entry key="Carrier">Carrier</entry>
+    <entry key="Delivery">Delivery</entry>
+    <entry key="Despatch Location">Despatch Location</entry>
+    <entry key="Expand or Collapse All">Expand or Collapse All</entry>
+    <entry key="ID">ID</entry>
+    <entry key="Item">Item</entry>
+    <entry key="Quantity">Quantity</entry>
+    <entry key="Reference Order">Reference Order</entry>
+    <entry key="Reference Order Line">Reference Order Line</entry>
+    <entry key="Standard">Standard</entry>
+    <entry key="Seller">Seller</entry>
+    <entry key="Manufacturer">Manufacturer</entry>
+</dict:en>
+</dict:dictionary>
