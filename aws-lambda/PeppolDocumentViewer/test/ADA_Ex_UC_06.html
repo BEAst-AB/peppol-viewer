@@ -1,0 +1,452 @@
+<!DOCTYPE HTML>
+<html xmlns:dict="https://beast.se/dictionary">
+   <head profile="http://www.w3.org/2005/10/profile">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Advanced Dispatch Advice</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3pro.css">
+      <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+      <meta http-equiv="Pragma" content="no-cache">
+      <meta http-equiv="Expires" content="0">
+      <style>
+.container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+  gap: 20px 20px;
+  justify-content: start;
+  align-content: space-between;
+}
+.container > div {
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: left;
+}
+.expandable-table {
+}
+.expandable-row {
+   display: grid;
+   cursor: pointer;
+}
+.expanded-row-content {
+   display: grid;
+   grid-column: 1/-1;
+}
+.line-main-row {
+   grid-template-columns: 3% 25% 7% repeat(5, 1fr);
+}
+.line-detail-panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+.accordion {
+  background-color: #bbb;
+  color: #444;
+  cursor: pointer;
+  padding-left: 5px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+.expand-table-row:before {
+    content: "+";
+    display: block;
+    cursor: pointer;
+}
+.expand-table-row.selected:before {
+    content: "-";
+}
+.navbar {
+    display:table;
+    border-collapse:collapse;
+    border-radius:.25em;
+    box-shadow:#d0d0d0 0px 0px 0px 1px;
+    li{
+        display:table-cell;
+        box-sizing:border-box;
+        border-left:#e0e0e0 10px solid;
+        border-right:#e0e0e0 10px solid;
+        &:first-child{
+          border-left:0;
+          & > a{ border-top-left-radius: .25em; border-bottom-left-radius: .25em; }
+        }
+        &:last-child{
+          border-right:0;
+          & > a{ border-top-right-radius: .25em; border-bottom-right-radius: .25em; }
+        }
+    }
+}
+</style>
+   </head>
+   <body>
+      <div style="background-color:orange" class="w3-container w3-card">
+         <h2 style="color:white">AdvancedDespatchAdvice Exempel Användning 06 Betongmaterial</h2>
+      </div>
+      <h3>100481957</h3>
+      <div class="w3-group" style="width:30%">
+         <form class="w3-container w3-card-8">
+            <fieldset>
+               <legend>Transport</legend><label id="GSIN" class="w3-label">GSIN</label><input class="w3-input" type="text" for="GSIN" value="73500538500000019"><label id="GINC" class="w3-label">GINC</label><input class="w3-input" type="text" for="GINC" value="735005233GS1TRANSPORT000001"></fieldset>
+         </form>
+      </div>
+      <div class="container">
+         <table class="w3-table w3-card-4">
+            <thead>
+               <tr>
+                  <th>Utgivningsdatum Tid</th>
+                  <th>Faktiskt leveransdatum Tid</th>
+                  <th>Beräknat leveransdatum</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>2023-05-04 08:30:00</td>
+                  <td>2023-05-03 12:32:00</td>
+                  <td>2023-05-03 12:30:00</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="container">
+         <div class="w3-container"><b>Anteckningar</b><div class="w3-cell-row w3-container">
+               <div class="w3-cell">Some note</div>
+            </div>
+         </div>
+      </div>
+      <div class="container">
+         <div class="w3-container"><b>Leverantör / säljare</b><div class="w3-cell-row w3-container"><b>Swerock AB</b></div>
+            
+            <div class="w3-cell-row w3-container">5560813031</div>
+            
+            <div class="w3-cell-row w3-container">Drivhjulsvägen 11</div>
+            
+            <div class="w3-cell-row w3-container">Hägersten SE 126 30</div>
+            <br><div class="w3-cell-row w3-container">Kalle Kula</div>
+            
+            <div class="w3-cell-row w3-container">0104599924</div>
+            
+            <div class="w3-cell-row w3-container">kalle.kula@swerock.se</div>
+            </div>
+         <div class="w3-container"><b>Kund / köpare</b><div class="w3-cell-row w3-container"><b>Skanska Sverige AB</b></div>
+            
+            <div class="w3-cell-row w3-container">5560339086</div>
+            
+            <div class="w3-cell-row w3-container">Warfvinges väg 25</div>
+            
+            <div class="w3-cell-row w3-container">Stockholm SE 112 74</div>
+            <br><div class="w3-cell-row w3-container"></div>
+            
+            <div class="w3-cell-row w3-container"></div>
+            
+            <div class="w3-cell-row w3-container"></div>
+            </div>
+      </div>
+      <div class="container">
+         <div class="w3-container"><b>Bärare</b><div class="w3-cell-row w3-container"><b>DHL</b></div>
+            
+            <div class="w3-cell-row w3-container">5790000435951</div>
+            
+            <div class="w3-cell-row w3-container"><br></div>
+            
+            <div class="w3-cell-row w3-container">ID06
+               1234567890
+               </div>
+            </div>
+         <div class="w3-container"><b>Leverans</b><div class="w3-cell-row w3-container"><b>Skanska Slussen SN94</b></div>
+            
+            <div class="w3-cell-row w3-container">5560339086</div>
+            
+            <div class="w3-cell-row w3-container">Katarinavägen 21 SN94</div>
+            
+            <div class="w3-cell-row w3-container">Stockholm SE 116 45</div>
+            </div>
+         <div class="w3-container"><b>Avsändande plats</b><div class="w3-cell-row w3-container"><b>5790000435951</b></div>
+            
+            <div class="w3-cell-row w3-container"></div>
+            
+            <div class="w3-cell-row w3-container">Hägersten SE 126 30</div>
+            
+            <div class="w3-cell-row w3-container"><br></div>
+            
+            <div class="w3-cell-row w3-container">EPSG:3857 59.29701362140153 18.02110774233039</div>
+            </div>
+      </div>
+      <div class="w3-container">
+         <ul class="navbar">
+            <li><input type="button" id="expand_all" value="Expandera eller kollapsa alla" onclick="allRowExpandToggle(this)"></li>
+         </ul>
+         <table class="expandable-table w3-table w3-striped w3-bordered w3-border">
+            <thead>
+               <tr class="expandable-row line-main-row">
+                  <th>Id</th>
+                  <th>Produkt</th>
+                  <th>Kvantitet</th>
+                  <th>Referensorder</th>
+                  <th>Referensorderlinje</th>
+                  <th>Standardprodukt</th>
+                  <th>Säljareprodukt</th>
+                  <th>Tillverkareprodukt</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr class="expandable-row line-main-row">
+                  <td>10</td>
+                  <td>Fabriksbetong, husbyggnad C25/30</td>
+                  <td>3.5 MTQ</td>
+                  <td>AEG012345</td>
+                  <td>1</td>
+                  <td>1234567891234</td>
+                  <td>212611</td>
+                  <td>212611</td>
+                  <td class="expanded-row-content"><button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row" onclick="toggleRowExpandSelected(this)"></span></button><div class="line-detail-panel">
+                        <div class="w3-container">
+                           <table class="w3-table w3-striped w3-bordered w3-border">
+                              <tbody>
+                                 <tr>
+                                    <th>Boverket Resource ID</th>
+                                    <td>6000000029</td>
+                                 </tr>
+                                 <tr>
+                                    <th>EPD Dataset ID</th>
+                                    <td>165f8554-00cd-43ad-aeb7-ba769854554a</td>
+                                 </tr>
+                                 <tr>
+                                    <th>EPD Dataset URL</th>
+                                    <td>https://epdnorway.lca-data.com/resource/processes/165f8554-00cd-43ad-aeb7-ba769854554a?format=xml&amp;version=00.01.000</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Program Operator</th>
+                                    <td>The Norwegian EPD Foundation</td>
+                                 </tr>
+                                 <tr>
+                                    <th>EPD Number</th>
+                                    <td>NEPD-2154-978-SE</td>
+                                 </tr>
+                                 <tr>
+                                    <th>EPD Product Name</th>
+                                    <td>Sweexp55 C30/37</td>
+                                 </tr>
+                                 <tr>
+                                    <th>EPD HR URL</th>
+                                    <td>https://www.epd-norge.no/getfile.php/1313397-1680247896/EPDer/Byggevarer/Ferdig%20betong/NEPD-2154-978_Sweexp55-C30-37-%281%29.pdf</td>
+                                 </tr>
+                                 <tr>
+                                    <th>GWP GHG A1-3 EPD value per kilogram</th>
+                                    <td>NA</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Mother EPD ID</th>
+                                    <td>NEPD-1717-700-SE</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Water Contact</th>
+                                    <td>2023-05-03T12:03:00</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Start unloading time</th>
+                                    <td>2023-05-03T09:03:00</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Stop unloading time</th>
+                                    <td>2023-05-03T12:50:00</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Strength Class</th>
+                                    <td>C25/30</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Exposure Class</th>
+                                    <td>XC4 XF1</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Chloride Content Class</th>
+                                    <td>Cl0.20</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Consistence Class</th>
+                                    <td>S3</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Density Class</th>
+                                    <td>D1</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Dmax</th>
+                                    <td>NA</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Water Cement Ratio</th>
+                                    <td>0.45</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Binder Combination Type</th>
+                                    <td>BK II/A-S</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Binder Combination Strength Class</th>
+                                    <td>42.5</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Cement Type</th>
+                                    <td>CEM II/A-LL</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Cement Description</th>
+                                    <td>Cementa Byggcement Slite CEM II/A-LL SR2/MH/LA 42.5 R</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Cement Strength Class</th>
+                                    <td>42.5</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Additive Type</th>
+                                    <td>GGBS</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Additive Type Description</th>
+                                    <td>Merit (GGBS) Swecem Oxelösund</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Admixture Type</th>
+                                    <td>Retarding Superplasticizer</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Fiber Description</th>
+                                    <td>STÅLFIBER 55/35 OE 87,5 kg/kbm</td>
+                                 </tr>
+                                 <tr>
+                                    <th>Fiber Amount</th>
+                                    <td>NA</td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr class="expandable-row line-main-row">
+                  <td>20</td>
+                  <td>Lossningstid</td>
+                  <td>20 MIN</td>
+                  <td>AEG012345</td>
+                  <td>10</td>
+                  <td>1234567891233</td>
+                  <td>212610</td>
+                  <td></td>
+                  <td class="expanded-row-content"><button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row" onclick="toggleRowExpandSelected(this)"></span></button><div class="line-detail-panel">
+                        <div class="w3-container">
+                           <table class="w3-table w3-striped w3-bordered w3-border">
+                              <tbody></tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr class="expandable-row line-main-row">
+                  <td>30</td>
+                  <td>Väntetid</td>
+                  <td>12 MIN</td>
+                  <td>AEG012345</td>
+                  <td>1</td>
+                  <td>1234567891232</td>
+                  <td>9209</td>
+                  <td></td>
+                  <td class="expanded-row-content"><button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row" onclick="toggleRowExpandSelected(this)"></span></button><div class="line-detail-panel">
+                        <div class="w3-container">
+                           <table class="w3-table w3-striped w3-bordered w3-border">
+                              <tbody></tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr class="expandable-row line-main-row">
+                  <td>40</td>
+                  <td>Transportzon 3</td>
+                  <td>3.5 MTQ</td>
+                  <td>AEG012345</td>
+                  <td>1</td>
+                  <td>1234567891230</td>
+                  <td>9203</td>
+                  <td></td>
+                  <td class="expanded-row-content"><button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row" onclick="toggleRowExpandSelected(this)"></span></button><div class="line-detail-panel">
+                        <div class="w3-container">
+                           <table class="w3-table w3-striped w3-bordered w3-border">
+                              <tbody></tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+               <tr class="expandable-row line-main-row">
+                  <td>50</td>
+                  <td>Min deb 5m3 transportzon 3</td>
+                  <td>1.5 MTQ</td>
+                  <td>AEG012345</td>
+                  <td>1</td>
+                  <td>1234567891229</td>
+                  <td>8441</td>
+                  <td></td>
+                  <td class="expanded-row-content"><button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row" onclick="toggleRowExpandSelected(this)"></span></button><div class="line-detail-panel">
+                        <div class="w3-container">
+                           <table class="w3-table w3-striped w3-bordered w3-border">
+                              <tbody></tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div><script>
+const toggleRowExpand = (element) => {  
+  element.classList.toggle("active");
+  var lineDetailPanel = element.nextElementSibling;
+  if (lineDetailPanel.style.maxHeight) {
+	lineDetailPanel.style.maxHeight = null;
+  } else {
+	lineDetailPanel.style.maxHeight = lineDetailPanel.scrollHeight + "px";
+  } 
+}
+
+const toggleRowExpandSelected = (element) => {  
+  element.classList.toggle("selected").closest('tr').next().toggle();
+}
+
+const allRowExpandToggle = (element) => {  
+  var lineTable = element.closest('ul').nextElementSibling;
+  for (var i = 0, row; i < lineTable.rows.length; i++) {
+    row = lineTable.rows[i];
+	for (var j = 0, col; j < row.cells.length; j++) {
+	  col = row.cells[j];
+	  if (col.classList.contains("expanded-row-content")) {
+	    var lineDetailButton = col.children[0];
+		if (lineDetailButton != null && lineDetailButton.classList.contains("accordion")) {
+		  var lineDetailSpan = lineDetailButton.children[0];
+		  if (lineDetailSpan != null && lineDetailSpan.classList.contains("expand-table-row")) {
+		    lineDetailSpan.classList.toggle("selected"); // .closest('tr').next().toggle();
+		  }
+		}
+	    var lineDetailPanel = col.children[1];
+		if (lineDetailPanel != null && lineDetailPanel.classList.contains("line-detail-panel")) {
+          if (lineDetailPanel.style.maxHeight) {
+            lineDetailPanel.style.maxHeight = null;
+          } else {
+	        lineDetailPanel.style.maxHeight = lineDetailPanel.scrollHeight + "px";
+          } 
+		}
+	  }
+	}
+  }
+}
+</script></body>
+</html>
