@@ -202,8 +202,11 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
             logger.log("Xpath expression: " + xpathExpr);
             String viewerMetadataFile = getXmlElementValue(logger, properties.getProperty("url.peppol.viewers.indexFile"), xpathExpr);
             logger.log("Viewer metadata: " + viewerMetadataFile);
-
-            responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", viewerMetadataFile, requestBody, language, properties.getProperty("url.repo.peppol-viewer"));
+			if (viewerMetadataFile == null) {
+              responseData = handleTransformRequest("Error_Unknown_Document_Or_Not_Supported.xsl", requestBody, properties.getProperty("url.peppol.viewers.indexFile"), language, properties.getProperty("url.repo.peppol-viewer"));
+			} else {
+              responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", viewerMetadataFile, requestBody, language, properties.getProperty("url.repo.peppol-viewer"));
+			}
         }
       } catch(Exception ex) {
         StringWriter sw = new StringWriter();
