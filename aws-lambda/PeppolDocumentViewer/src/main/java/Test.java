@@ -1,4 +1,5 @@
 import java.util.Properties;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -32,8 +33,12 @@ import org.w3c.dom.Element;
 import java.net.URL;
 import java.net.URLConnection;
 
-// javac --release 21 Test.java
-// java Test
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
+// javac -cp .\..\lib\*;. --release 21 Test.java
+// java -cp .\..\lib\*;. Test
 
 public class Test {
 	
@@ -83,17 +88,33 @@ public class Test {
     }
 
   public static void testProperties() {
-	String connectionPropertiesFile = "PeppolViewers.properties";
+	String connectionPropertiesFile = "../resources/peppol-viewers.properties";
 	try {
 		Properties connectionProperties = new Properties();
         connectionProperties.load(new FileInputStream(connectionPropertiesFile));
 
         if (verbose) {
-          System.out.println("AccessTokenURL=" + connectionProperties.getProperty("AccessTokenURL"));
-          System.out.println("ClientId=" + connectionProperties.getProperty("ClientId"));
-          System.out.println("ClientSecret=" + connectionProperties.getProperty("ClientSecret"));
-          System.out.println("ApiUrlBaseTransactions=" + connectionProperties.getProperty("ApiUrlBaseTransactions"));
-          System.out.println("ApiUrlPartTransactions=" + connectionProperties.getProperty("ApiUrlPartTransactions"));
+		  for (Object key: connectionProperties.keySet()) {
+            System.out.println(key + ": " + connectionProperties.getProperty(key.toString()));
+          }
+		}
+		
+		
+	} catch (Exception ex) {
+		ex.printStackTrace();
+	}
+  }
+
+  public static void testProperties2() throws ConfigurationException {
+    Configurations configs = new Configurations();
+	String connectionPropertiesFile = "../resources/peppol-viewers.properties";
+    Configuration config = configs.properties(new File(connectionPropertiesFile));
+	try {
+        if (verbose) {
+            System.out.println("url.repo.peppol-viewer: " + config.getString("url.repo.peppol-viewer"));
+            System.out.println("url.metadata: " + config.getString("url.metadata"));
+            System.out.println("url.translations: " + config.getString("url.translations"));
+            System.out.println("url.peppol.viewers.indexFile: " + config.getString("url.peppol.viewers.indexFile"));
 		}
 	} catch (Exception ex) {
 		ex.printStackTrace();
@@ -143,7 +164,7 @@ public class Test {
 	  System.out.println("Viewer metadata: " + getXmlElementValue("C:/Users/KishoreSadanandam/source/repos/BEAst-AB/peppol-viewer/aws-lambda/PeppolDocumentViewer/src/main/resources/PeppolViewers.xml", xpathExpr));
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws IOException, ConfigurationException {
 	  // testProperties();
 	  
 	  // keytool -importcert -file "C:\Users\KishoreSadanandam\Documents\Navigate\Certificates\GIT_Hub\L0 USERTrust ECC Certification Authority.crt"
@@ -152,7 +173,9 @@ public class Test {
 	  // keytool -changealias -alias "mykey" -destalias "L0_GIT_Hub"
 	  // String data = readRemoteFileFileData("https://raw.githubusercontent.com/BEAst-AB/dpp/refs/heads/main/aws-lambda/TickstarGalaxyGatewayTransactionHandler/src/main/resources/Providers.xml?token=GHSAT0AAAAAADDSVJDX7FXVGFRSUNCQIUH62BB7TLA");
 	  
-	  String data = readRemoteFileFileData("https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/peppol-viewers.xml");
-	  System.out.println("Data: " + data);
+	  // String data = readRemoteFileFileData("https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/peppol-viewers.xml");
+	  // System.out.println("Data: " + data);
+	  
+	  testProperties2();
   }
 }

@@ -61,6 +61,11 @@ import org.w3c.dom.Element;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.MultipartStream;
 
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.builder.fluent.Configurations;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
+
 // javac -cp .\lib\*;. --release 21 beast\peppol\viewer\lambda\handler\PeppolDocumentViewer.java
 // java -cp .\lib\*;. beast.peppol.viewer.lambda.handler.PeppolDocumentViewer
 
@@ -186,26 +191,26 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
 		return returnString;
     }
 	
-	public static String processPeppolDocument(LambdaLogger logger, Map<String, String> requestHeaders, String requestBody, Properties properties, boolean verbose) {
+	public static String processPeppolDocument(LambdaLogger logger, Map<String, String> requestHeaders, String requestBody, Configuration properties, boolean verbose) {
       String responseData = null;
 	  try {
         // String requestContentType = requestHeaders.get("Content-Type");
 	    // if ("application/json".equals(requestContentType) && requestBody != null) {
 	    if (requestBody != null) {
-			String language = requestHeaders.get("Language");
-			if (language == null)
-		      language = "en";
+			String language = "en";
+			if (requestHeaders != null && requestHeaders.get("Language") != null)
+		      language = requestHeaders.get("Language");
             String rootElement = getXmlRootElement(logger, requestBody);
             logger.log("Root element: " + rootElement);
 
             String xpathExpr = "/Peppol/Viewers[@document=\""+ rootElement +"\"]";
             logger.log("Xpath expression: " + xpathExpr);
-            String viewerMetadataFile = getXmlElementValue(logger, properties.getProperty("url.peppol.viewers.indexFile"), xpathExpr);
+            String viewerMetadataFile = getXmlElementValue(logger, properties.getString("url.peppol.viewers.indexFile"), xpathExpr);
             logger.log("Viewer metadata: " + viewerMetadataFile);
 			if (viewerMetadataFile == null) {
-              responseData = handleTransformRequest("Error_Unknown_Document_Or_Not_Supported.xsl", requestBody, properties.getProperty("url.peppol.viewers.indexFile"), language, properties.getProperty("url.repo.peppol-viewer"));
+              responseData = handleTransformRequest("Error_Unknown_Document_Or_Not_Supported.xsl", requestBody, properties.getString("url.peppol.viewers.indexFile"), language, properties.getString("url.repo.peppol-viewer"));
 			} else {
-              responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", viewerMetadataFile, requestBody, language, properties.getProperty("url.repo.peppol-viewer"));
+              responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", viewerMetadataFile, requestBody, language, properties.getString("url.repo.peppol-viewer"));
 			}
         }
       } catch(Exception ex) {
@@ -232,9 +237,12 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
 	boolean verbose = true;
 	String responseBody = null;
     try {
-      Properties properties = loadProperties(logger, "peppol-viewers.properties", verbose); 
-	  logger.log("Properties: " + properties);
-      responseBody = processPeppolDocument(logger, event.getHeaders(), event.getBody(), properties, verbose);
+      // Properties properties = loadProperties(logger, "peppol-viewers.properties", verbose); 
+	  // logger.log("Properties: " + properties);
+      Configurations configs = new Configurations();
+	  String connectionPropertiesFile = "../resources/peppol-viewers.properties";
+      Configuration config = configs.properties(new File(connectionPropertiesFile));
+      responseBody = processPeppolDocument(logger, event.getHeaders(), event.getBody(), config, verbose);
     } catch(Exception ex) {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
