@@ -10,6 +10,12 @@ import java.util.Properties;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -64,6 +70,8 @@ import org.apache.commons.fileupload.MultipartStream;
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
+
+import beast.peppol.viewer.lambda.xml.NamespaceResolver;
 
 
 // javac -cp .\lib\*;. --release 21 beast\peppol\viewer\lambda\handler\PeppolDocumentViewer.java
@@ -140,6 +148,17 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
 		return properties;
 	}
 
+    public static List patternMatch(String text, String patternString) {
+        Pattern p = Pattern.compile(patternString);
+        List<String> res = p.matcher(text)
+                          .results()
+                          .flatMap(mr -> IntStream.rangeClosed(1, mr.groupCount())
+                          .mapToObj(mr::group))
+                          .collect(Collectors.toList());
+        System.out.println(res);
+        return res;
+    } 	
+
     public static String getXmlRootElement(LambdaLogger logger, String xmlString) {
         String returnString = null;
 
@@ -166,7 +185,7 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
 		return returnString;
     }
 
-    public static String getXmlElementValue(LambdaLogger logger, String xmlFileUri, String xpathExpr) {
+    public static String getXmlElementValue(LambdaLogger logger, String xmlSourceFileUri, String xmlSourceString, String xpathExpr) {
         String returnString = null;
 
         try {
@@ -174,12 +193,30 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true); // Optional: Enable namespace awareness
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(xmlFileUri);
+			Document document = null;
+			if (xmlSourceFileUri != null && !xmlSourceFileUri.isBlank()) {
+                document = builder.parse(xmlSourceFileUri);
+			} else if (xmlSourceString != null && !xmlSourceString.isBlank()) {
+				document = builder.parse(new ByteArrayInputStream(xmlSourceString.getBytes()));
+			}
+			
+			if (document != null) {
+				NamespaceResolver nsResolver = new NamespaceResolver(document);
+                XPathFactory xPathfactory = XPathFactory.newInstance();
+                XPath xpath = xPathfactory.newXPath();
+				xpath.setNamespaceContext(nsResolver);
+                List<String> nsUriList = patternMatch(xpathExpr , "\\{([^]\\[\\{\\}]+)\\}.*?");
+				Map<String, String> nsPrefixMap = new HashMap<String, String>();
+				for (String nsUri: nsUriList) {
+					String prefix = nsResolver.getPrefix(nsUri);
+					nsPrefixMap.put(prefix, nsUri);
+				    xpathExpr = xpathExpr.replaceAll("\\{" + nsUri + "\\}", prefix == null ? "defaultPrefix:": prefix+":");
+				}
+				System.out.println("xpathExpr: " + xpathExpr);
+                XPathExpression expr = xpath.compile(xpathExpr);
+			    returnString = (String) expr.evaluate(document, XPathConstants.STRING);
+			}
 
-            XPathFactory xPathfactory = XPathFactory.newInstance();
-            XPath xpath = xPathfactory.newXPath();
-            XPathExpression expr = xpath.compile(xpathExpr);
-			returnString = (String) expr.evaluate(document, XPathConstants.STRING);
         } catch (Exception ex) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);
@@ -202,10 +239,16 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
 		      language = requestHeaders.get("Language");
             String rootElement = getXmlRootElement(logger, requestBody);
             logger.log("Root element: " + rootElement);
+            // String xpathExpr = "/" + rootElement + "/{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}CustomizationID";
+            // String xpathExpr = "//cbc:CustomizationID";
+			String xpathExpr = "//*[local-name()='CustomizationID']/text()";
+            logger.log("Xpath expression (CustomizationId): " + xpathExpr);
+            String customizationId = getXmlElementValue(logger, null, requestBody, xpathExpr);
+            logger.log("CustomizationId: " + customizationId);
 
-            String xpathExpr = "/Peppol/Viewers[@document=\""+ rootElement +"\"]";
-            logger.log("Xpath expression: " + xpathExpr);
-            String viewerMetadataFile = getXmlElementValue(logger, properties.getString("url.peppol.viewers.indexFile"), xpathExpr);
+            xpathExpr = "/Peppol/Viewers[@CustomizationID=\""+ customizationId +"\"]";
+            logger.log("Xpath expression (Peppol Document): " + xpathExpr);
+            String viewerMetadataFile = getXmlElementValue(logger, properties.getString("url.peppol.viewers.indexFile"), null, xpathExpr);
             logger.log("Viewer metadata: " + viewerMetadataFile);
 			if (viewerMetadataFile == null) {
               responseData = handleTransformRequest("Error_Unknown_Document_Or_Not_Supported.xsl", requestBody, properties.getString("url.peppol.viewers.indexFile"), language, properties.getString("url.repo.peppol-viewer"));

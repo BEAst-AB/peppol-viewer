@@ -12,8 +12,10 @@
 				exclude-result-prefixes="xsi xsl xs fn sbdh ubl cac cbc doc">
 	<xsl:param name="paramDataXml" required="yes" />
 	<xsl:param name="paramLang" required="yes" />
+	<xsl:param name="paramUrlRepo" required="yes" />
 	<xsl:variable name="varDataXml" select="document($paramDataXml)"/>
-	<xsl:variable name="varTranslationXmlFile" select="/doc:BusinessDocument/doc:TranslationXmlFile"/>
+	<xsl:variable name="varTranslationXmlFile" select="concat($paramUrlRepo, &quot;/refs/heads/main/translations/&quot;,/doc:BusinessDocument/doc:TranslationXmlFile)"/>
+	<xsl:variable name="varTranslationDefaultXmlFile" select="concat($paramUrlRepo, &quot;/refs/heads/main/translations/dictionary.xml&quot;)"/>
 	<xsl:output method="html" indent="yes"/>
 
 	<xsl:import href="Dictionary.xsl"/>

@@ -7,7 +7,7 @@
   <WindowTitle>Advanced Despatch Advice</WindowTitle>
   <PageTitle>Advanced Despatch Advice Example UseCase 06 Concrete material</PageTitle>
   <DocumentTitle>/ubl:DespatchAdvice/cbc:ID/text()</DocumentTitle>
-  <TranslationXmlFile>Dictionary_ADA.xml</TranslationXmlFile>
+  <TranslationXmlFile>dictionary-ada.xml</TranslationXmlFile>
   <Section>
     <Fields>
       <Form title="Shipment">

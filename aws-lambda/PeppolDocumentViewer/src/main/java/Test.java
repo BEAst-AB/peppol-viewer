@@ -1,4 +1,6 @@
 import java.util.Properties;
+import java.util.Map;
+import java.util.HashMap;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +28,12 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathExpression;
+
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,7 +74,7 @@ public class Test {
 		return returnString;
     }
 
-    public static String getXmlElementValue(String xmlFileUri, String xpathExpr) {
+    public static String getXmlElementValue(String xmlSourceFileUri, String xmlSourceString, String xpathExpr) {
         String returnString = null;
 
         try {
@@ -74,19 +82,62 @@ public class Test {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true); // Optional: Enable namespace awareness
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(xmlFileUri);
+			Document document = null;
+			if (xmlSourceFileUri != null && !xmlSourceFileUri.isBlank()) {
+                document = builder.parse(xmlSourceFileUri);
+			} else if (xmlSourceString != null && !xmlSourceString.isBlank()) {
+				document = builder.parse(new ByteArrayInputStream(xmlSourceString.getBytes()));
+			} else {
+				System.out.println("Invalid source XML.");
+			}
+			
+			if (document != null) {
+				NamespaceResolver nsResolver = new NamespaceResolver(document);
+				
+                XPathFactory xPathfactory = XPathFactory.newInstance();
+                XPath xpath = xPathfactory.newXPath();
+				xpath.setNamespaceContext(nsResolver);
+                List<String> nsUriList = patternMatch(xpathExpr , "\\{([^]\\[\\{\\}]+)\\}.*?");
+				Map<String, String> nsPrefixMap = new HashMap<String, String>();
+				for (String nsUri: nsUriList) {
+					String prefix = nsResolver.getPrefix(nsUri);
+					nsPrefixMap.put(prefix, nsUri);
+				    xpathExpr = xpathExpr.replaceAll("\\{" + nsUri + "\\}", prefix == null ? "defaultPrefix:": prefix+":");
+				}
+				System.out.println("nsPrefixMap: " + nsPrefixMap);
+				System.out.println("xpathExpr: " + xpathExpr);
+                XPathExpression expr = xpath.compile(xpathExpr);
+			    returnString = (String) expr.evaluate(document, XPathConstants.STRING);
+			} else {
+				System.out.println("Empty XML document.");
+			}
 
-            XPathFactory xPathfactory = XPathFactory.newInstance();
-            XPath xpath = xPathfactory.newXPath();
-            XPathExpression expr = xpath.compile(xpathExpr);
-			returnString = (String) expr.evaluate(document, XPathConstants.STRING);
-        } catch (Exception e) {
-            System.out.println("Invalid XML: " + e.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 		
 		return returnString;
     }
 
+  public static List patternMatch(String text, String patternString) {
+    /*Pattern pattern = Pattern.compile(patternString);
+    Matcher matcher = pattern.matcher(text);
+    while (matcher.find()) {
+        String group = matcher.group();
+        int start = matcher.start();
+        int end = matcher.end();
+        System.out.println(group + " " + start + " " + end);
+    }*/  
+	Pattern p = Pattern.compile(patternString);
+    List<String> res = p.matcher(text)
+                          .results()
+                          .flatMap(mr -> IntStream.rangeClosed(1, mr.groupCount())
+                          .mapToObj(mr::group))
+                          .collect(Collectors.toList());
+    System.out.println(res);
+	return res;
+  } 	
+  
   public static void testProperties() {
 	String connectionPropertiesFile = "../resources/peppol-viewers.properties";
 	try {
@@ -161,7 +212,28 @@ public class Test {
 	  
 	  String xpathExpr = "/Peppol/Viewers[@document=\""+ rootElement +"\"]";
 	  System.out.println("Xpath expression: " + xpathExpr);
-	  System.out.println("Viewer metadata: " + getXmlElementValue("C:/Users/KishoreSadanandam/source/repos/BEAst-AB/peppol-viewer/aws-lambda/PeppolDocumentViewer/src/main/resources/PeppolViewers.xml", xpathExpr));
+	  System.out.println("Viewer metadata: " + getXmlElementValue("C:/Users/KishoreSadanandam/source/repos/BEAst-AB/peppol-viewer/aws-lambda/PeppolDocumentViewer/src/main/resources/PeppolViewers.xml", null, xpathExpr));
+  }
+
+  public static void testXmlParsing2() throws IOException {
+	  Path path = FileSystems.getDefault().getPath("C:/Users/KishoreSadanandam/source/repos/BEAst-AB/peppol-viewer/aws-lambda/PeppolDocumentViewer/test/AdvancedDespatchAdvice__Example_UseCase_06_Concrete_material.xml");
+	  String content = Files.readString(path, StandardCharsets.UTF_8);
+	  String rootElement = getXmlRootElement(content);
+	  System.out.println("Root element: " + rootElement);
+	  
+      // String xpathExpr = "/" + rootElement + "/{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}CustomizationID";
+	  // String xpathExpr = "/" + rootElement + "/cbc:CustomizationID";
+      // String xpathExpr = "//cbc:CustomizationID";
+      // String xpathExpr = "//{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}CustomizationID";
+	  String xpathExpr = "//*[local-name()='CustomizationID']/text()";
+	  System.out.println("Xpath expression (CustomizationId): " + xpathExpr);
+      String customizationId = getXmlElementValue(null, content, xpathExpr);
+	  System.out.println("CustomizationId: " + customizationId);
+
+      xpathExpr = "/Peppol/Viewers[@CustomizationID=\""+ customizationId +"\"]";
+
+	  System.out.println("Xpath expression: " + xpathExpr);
+	  System.out.println("Viewer metadata: " + getXmlElementValue("C:/Users/KishoreSadanandam/source/repos/BEAst-AB/peppol-viewer/metadata/peppol-viewers.xml", null, xpathExpr));
   }
 
   public static void main(String[] args) throws IOException, ConfigurationException {
@@ -176,6 +248,7 @@ public class Test {
 	  // String data = readRemoteFileFileData("https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/peppol-viewers.xml");
 	  // System.out.println("Data: " + data);
 	  
-	  testProperties2();
+	  testXmlParsing2();
+	  // patternMatch("/{urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2}DespatchAdvice/{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}CustomizationID" , "\\{([^]\\[\\{\\}]+)\\}.*?");
   }
 }
