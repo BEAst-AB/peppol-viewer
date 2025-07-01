@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <BusinessDocument xmlns="https://beast.se/xmltools">
   <Namespaces>
     <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2</Namespace>
