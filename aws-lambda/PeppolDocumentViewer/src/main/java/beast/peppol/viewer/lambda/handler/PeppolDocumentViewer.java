@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Collectors;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.PrintWriter;
@@ -24,8 +25,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+
+import java.net.URL;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -79,29 +83,31 @@ import beast.peppol.viewer.lambda.xml.NamespaceResolver;
 
 public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse>{
 
-  public static String handleTransformRequest(String xslFile, String sourceXmlData, String dataXmlFile, String language, String urlRepo) throws TransformerException {
+  public static String handleTransformRequest(String xslFile, InputStream sourceXmlData, Map<String, Object> paramMap) throws TransformerException {
       TransformerFactory tf = TransformerFactory.newInstance();
       Templates t = tf.newTemplates(new StreamSource(new File(xslFile)));
 	  Transformer trx = t.newTransformer();
-	  trx.setParameter("paramDataXml", dataXmlFile);
-	  trx.setParameter("paramLang", language);
-	  trx.setParameter("paramUrlRepo", urlRepo);
+	  // trx.setParameter("paramDataXml", dataXmlFileAbsPath);
+	  // trx.setParameter("paramLang", language);
+	  // trx.setParameter("paramUrlRepo", urlRepo);
+	  for (var entry : paramMap.entrySet()) {
+		trx.setParameter(entry.getKey(), entry.getValue());
+	  }
       StringWriter writer = new StringWriter();
-      trx.transform( new StreamSource(new StringReader(sourceXmlData)), new StreamResult(writer));
+      trx.transform( new StreamSource(sourceXmlData), new StreamResult(writer));
       return writer.toString();
 	  // return "<StandardBusinessDocument xmlns=\"http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader\"/>";
   }
 
-  public static String handleSaxonTransformRequest(String xslFile, String sourceXmlData, String dataXmlFile, String language, String urlRepo) throws SaxonApiException {
+  public static String handleSaxonTransformRequest(String xslFile, String sourceXmlData, Map<QName, XdmValue> paramMap) throws SaxonApiException {
 	  Processor PROCESSOR = new Processor(false);
 	  XsltExecutable stylesheet = PROCESSOR.newXsltCompiler().compile(new StreamSource(new File(xslFile)));
 	  Xslt30Transformer transformer = stylesheet.load30();
-	  // Map<QName, XdmValue> params = Collections.singletonMap(new QName("paramDataXml"), new XdmAtomicValue(dataXmlFile));
-	  Map<QName, XdmValue> params = new HashMap<QName, XdmValue>();
-	  params.put(new QName("paramDataXml"), new XdmAtomicValue(dataXmlFile));
-	  params.put(new QName("paramLang"), new XdmAtomicValue(language));
-	  params.put(new QName("paramUrlRepo"), new XdmAtomicValue(urlRepo));
-	  transformer.setStylesheetParameters(params);
+	  // Map<QName, XdmValue> params = new HashMap<QName, XdmValue>();
+	  // params.put(new QName("paramDataXml"), new XdmAtomicValue(dataXmlFileAbsPath));
+	  // params.put(new QName("paramLang"), new XdmAtomicValue(language));
+	  // params.put(new QName("paramUrlRepo"), new XdmAtomicValue(urlRepo));
+	  transformer.setStylesheetParameters(paramMap);
 	  ByteArrayOutputStream baos = new ByteArrayOutputStream();
       Serializer output = PROCESSOR.newSerializer(baos);
 	  transformer.transform( new StreamSource(new StringReader(sourceXmlData)), output);
@@ -228,7 +234,7 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
 		return returnString;
     }
 	
-	public static String processPeppolDocument(LambdaLogger logger, Map<String, String> requestHeaders, String requestBody, Configuration properties, boolean verbose) {
+	public static String processPeppolDocument(LambdaLogger logger, Map<String, String> requestHeaders, String requestBody, File requestAsTempFile, Configuration properties, boolean verbose) {
       String responseData = null;
 	  try {
         // String requestContentType = requestHeaders.get("Content-Type");
@@ -250,10 +256,18 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
             logger.log("Xpath expression (Peppol Document): " + xpathExpr);
             String viewerMetadataFile = getXmlElementValue(logger, properties.getString("url.peppol.viewers.indexFile"), null, xpathExpr);
             logger.log("Viewer metadata: " + viewerMetadataFile);
-			if (viewerMetadataFile == null) {
-              responseData = handleTransformRequest("Error_Unknown_Document_Or_Not_Supported.xsl", requestBody, properties.getString("url.peppol.viewers.indexFile"), language, properties.getString("url.repo.peppol-viewer"));
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("paramLang", language);
+            paramMap.put("paramUrlRepo", properties.getString("url.repo.peppol-viewer"));
+			if (viewerMetadataFile == null || (viewerMetadataFile != null && viewerMetadataFile.trim().isEmpty())) {
+              paramMap.put("paramDataXml", properties.getString("url.peppol.viewers.indexFile"));
+              responseData = handleTransformRequest("Error_Unknown_Document_Or_Not_Supported.xsl", new ByteArrayInputStream(requestBody.getBytes()), paramMap);
 			} else {
-              responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", viewerMetadataFile, requestBody, language, properties.getString("url.repo.peppol-viewer"));
+              logger.log("requestAsTempFile.getAbsolutePath(): " + requestAsTempFile.getAbsolutePath());
+              logger.log("language: " + language);
+              logger.log("properties.getString(\"url.repo.peppol-viewer\"): " + properties.getString("url.repo.peppol-viewer"));
+              paramMap.put("paramDataXml", requestAsTempFile.getAbsolutePath());
+			  responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", new URL(viewerMetadataFile).openStream(), paramMap);
 			}
         }
       } catch(Exception ex) {
@@ -265,12 +279,23 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
       }
 	  return responseData;
 	}
+	
+  public File storeRequestAsFile(String uniqueRequestId, String requestBody) throws IOException {
+	  String tempDir = System.getProperty("java.io.tmpdir");
+	  File tempFile = new File(tempDir, "PDV_" + uniqueRequestId + ".xml");
+	  try (FileWriter writer = new FileWriter(tempFile)) {
+        writer.write(requestBody);
+      }
+	  return tempFile;
+  }
 
   @Override
   public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent event, Context context)
   {
+	String uniqueRequestId = context.getAwsRequestId();
     LambdaLogger logger = context.getLogger();
     // logger.log("EVENT TYPE: " + event.getClass().toString());
+    logger.log("Request Id: " + uniqueRequestId);
     logger.log("Request Event: " + event);
     logger.log("Request Context: " + context);
     logger.log("Headers: " + event.getHeaders());
@@ -279,19 +304,26 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
     // logger.log("Request Content-Type: " + requestContentType);
 	boolean verbose = true;
 	String responseBody = null;
+	File requestAsTempFile = null;
     try {
+      requestAsTempFile = storeRequestAsFile(uniqueRequestId, event.getBody());
       // Properties properties = loadProperties(logger, "peppol-viewers.properties", verbose); 
 	  // logger.log("Properties: " + properties);
+	  logger.log("requestAsTempFile: " + requestAsTempFile.getAbsolutePath());
       Configurations configs = new Configurations();
 	  String connectionPropertiesFile = "../resources/peppol-viewers.properties";
       Configuration config = configs.properties(new File(connectionPropertiesFile));
-      responseBody = processPeppolDocument(logger, event.getHeaders(), event.getBody(), config, verbose);
+      responseBody = processPeppolDocument(logger, event.getHeaders(), event.getBody(), requestAsTempFile, config, verbose);
+	  requestAsTempFile.delete();
     } catch(Exception ex) {
       StringWriter sw = new StringWriter();
       PrintWriter pw = new PrintWriter(sw);
       ex.printStackTrace(pw);
       String stackTrace = sw.toString();
       logger.log(stackTrace);
+	  if (requestAsTempFile != null && requestAsTempFile.exists()) {
+		  requestAsTempFile.delete();
+	  }
     }
     APIGatewayV2HTTPResponse response = new APIGatewayV2HTTPResponse();
     response.setIsBase64Encoded(false);
@@ -304,9 +336,12 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
   }
   
   public static void main(String[] args) throws TransformerException, IOException, SaxonApiException {
-	  Path path = FileSystems.getDefault().getPath("AdvancedDespatchAdvice__Example_UseCase_06_Concrete_material.xml");
-	  String content = Files.readString(path, StandardCharsets.UTF_8);
-	  System.out.println(handleTransformRequest("XML_To_Formatted_HTML.xsl", "AdvancedDespatchAdvice_html_meta.xml", content, "sv", "https://github.com/BEAst-AB/peppol-viewer"));
-	  // System.out.println(PeppolDocumentViewer.handleRequest("XML_To_Formatted_HTML.xsl", "AdvancedDespatchAdvice_html_meta.xml", "AdvancedDespatchAdvice__Example_UseCase_06_Concrete_material.xml", "sv"));
+	  // Path path = FileSystems.getDefault().getPath("AdvancedDespatchAdvice__Example_UseCase_06_Concrete_material.xml");
+	  // String content = Files.readString(path, StandardCharsets.UTF_8);
+      Map<String, Object> paramMap = new HashMap<String, Object>();
+      paramMap.put("paramDataXml", "AdvancedDespatchAdvice__Example_UseCase_06_Concrete_material.xml");
+      paramMap.put("paramLang", "sv");
+      paramMap.put("paramUrlRepo", "https://github.com/BEAst-AB/peppol-viewer");
+	  System.out.println(handleTransformRequest("XML_To_Formatted_HTML.xsl", new URL("AdvancedDespatchAdvice_html_meta.xml").openStream(), paramMap));
   }
 }

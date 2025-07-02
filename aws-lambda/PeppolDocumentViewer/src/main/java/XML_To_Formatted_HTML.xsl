@@ -116,7 +116,8 @@
 <h2 style="color:white">
 <xsl:variable name="varFileName">
 <xsl:call-template name="fileNameFromPath">
-  <xsl:with-param name="path" select="base-uri($varDataXml)" />
+  <!--xsl:with-param name="path" select="base-uri($varDataXml)" /-->
+  <xsl:with-param name="path" select="base-uri()" />
 </xsl:call-template>
 </xsl:variable>
 <xsl:call-template name="translate"><xsl:with-param name="keyName" select="$varFileName"/></xsl:call-template>
