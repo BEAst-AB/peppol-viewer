@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Advanced Despatch Advice</WindowTitle>
+  <PageTitle>Advanced Despatch Advice - Visualisering</PageTitle>
+  <DocumentTitle>/ubl:DespatchAdvice/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary-ada.xml</TranslationXmlFile>
+
+  <!-- Dokumentinformation -->
+  <Section title="Dokumentinformation">
+    <Fields>
+      <Field name="Dokument-ID" expr="/ubl:DespatchAdvice/cbc:ID/text()" />
+      <Field name="Utfärdandedatum" expr="/ubl:DespatchAdvice/cbc:IssueDate/text()" />
+      <Field name="Utfärdandetid" expr="/ubl:DespatchAdvice/cbc:IssueTime/text()" />
+      <Field name="Dokumentstatus" expr="/ubl:DespatchAdvice/cbc:DocumentStatusCode/text()" />
+      <Field name="Leveransaviseringstyp" expr="/ubl:DespatchAdvice/cbc:DespatchAdviceTypeCode/text()" />
+      <Field name="Anteckning" expr="/ubl:DespatchAdvice/cbc:Note/text()" />
+      <Field name="Orderreferens" expr="/ubl:DespatchAdvice/cac:OrderReference/cbc:ID/text()" />
+    </Fields>
+  </Section>
+
+  <!-- Parter -->
+  <Section title="Parter">
+    <Fields>
+      <Form title="Avsändare">
+        <Field name="ID" expr="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:PartyIdentification/cbc:ID/text()" />
+        <Field name="VAT" expr="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:PartyTaxScheme/cbc:CompanyID/text()" />
+        <Field name="Kontakt" expr="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:Contact/cbc:Name/text()" />
+        <Field name="Telefon" expr="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:Contact/cbc:Telephone/text()" />
+        <Field name="E-post" expr="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:Contact/cbc:ElectronicMail/text()" />
+        <Field name="Adress" expr="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party/cac:PostalAddress" type="address" />
+      </Form>
+      <Form title="Mottagare">
+        <Field name="ID" expr="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party/cac:PartyIdentification/cbc:ID/text()" />
+        <Field name="VAT" expr="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party/cac:PartyTaxScheme/cbc:CompanyID/text()" />
+        <Field name="Kontakt" expr="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party/cac:Contact/cbc:Name/text()" />
+        <Field name="Telefon" expr="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party/cac:Contact/cbc:Telephone/text()" />
+        <Field name="E-post" expr="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party/cac:Contact/cbc:ElectronicMail/text()" />
+        <Field name="Adress" expr="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party/cac:PostalAddress" type="address" />
+      </Form>
+      <Form title="Köpare">
+        <Field name="Kontakt" expr="/ubl:DespatchAdvice/cac:BuyerCustomerParty/cac:Party/cac:Contact/cbc:Name/text()" />
+        <Field name="Telefon" expr="/ubl:DespatchAdvice/cac:BuyerCustomerParty/cac:Party/cac:Contact/cbc:Telephone/text()" />
+        <Field name="E-post" expr="/ubl:DespatchAdvice/cac:BuyerCustomerParty/cac:Party/cac:Contact/cbc:ElectronicMail/text()" />
+      </Form>
+      <Form title="Säljare">
+        <Field name="Kontakt" expr="/ubl:DespatchAdvice/cac:SellerSupplierParty/cac:Party/cac:Contact/cbc:Name/text()" />
+        <Field name="Telefon" expr="/ubl:DespatchAdvice/cac:SellerSupplierParty/cac:Party/cac:Contact/cbc:Telephone/text()" />
+        <Field name="E-post" expr="/ubl:DespatchAdvice/cac:SellerSupplierParty/cac:Party/cac:Contact/cbc:ElectronicMail/text()" />
+      </Form>
+    </Fields>
+  </Section>
+
+  <!-- Leveransinformation -->
+  <Section title="Leveransinformation">
+    <Fields>
+      <Field name="Leverans-ID" expr="/ubl:DespatchAdvice/cac:Shipment/cbc:ID/text()" />
+      <Field name="Spårningsnummer" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cbc:ID/text()" />
+      <Field name="Faktisk leveransdag" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cbc:ActualDeliveryDate/text()" />
+      <Field name="Faktisk leveranstid" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cbc:ActualDeliveryTime/text()" />
+      <Field name="Avsändningsdatum" expr="/ubl:DespatchAdvice/cac:Shipment/cbc:ShipmentDate/text()" />
+      <Field name="Avsändningstid" expr="/ubl:DespatchAdvice/cac:Shipment/cbc:ShipmentTime/text()" />
+      <Field name="Bruttovikt" expr="/ubl:DespatchAdvice/cac:Shipment/cbc:GrossWeightMeasure/text()" />
+      <Field name="Bruttevolym" expr="/ubl:DespatchAdvice/cac:Shipment/cbc:GrossVolumeMeasure/text()" />
+      <Field name="Statistiskt värde" expr="/ubl:DespatchAdvice/cac:Shipment/cbc:ValueAmount/text()" />
+      <Form title="Leveransplats">
+        <Field name="Adress" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cac:DeliveryLocation/cac:Address" type="address" />
+        <Field name="Koordinater" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cac:DeliveryLocation/cac:Address/cac:LocationCoordinate" type="coordinates" />
+      </Form>
+      <Form title="Transportinformation">
+        <Field name="Transportläge" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cbc:TransportModeCode/text()" />
+        <Field name="Registreringsnummer" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportEquipment/cbc:RegistrationNationalityID/text()" />
+        <Field name="Flygplan ID" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cbc:AircraftID/text()" />
+        <Field name="Tåg ID" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cbc:TrainID/text()" />
+        <Field name="Fartyg ID" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cbc:VesselID/text()" />
+      </Form>
+    </Fields>
+  </Section>
+
+  <!-- Artikelrader -->
+  <Section title="Artikelrader">
+    <Fields>
+      <Repeat expr="/ubl:DespatchAdvice/cac:DespatchLine">
+        <Field name="Rad-ID" expr="cbc:ID/text()" />
+        <Field name="Artikelnamn" expr="cac:Item/cbc:Name/text()" />
+        <Field name="Artikelnummer" expr="cac:Item/cac:SellersItemIdentification/cbc:ID/text()" />
+        <Field name="Levererad kvantitet" expr="cbc:DeliveredQuantity/text()" />
+        <Field name="Utestående kvantitet" expr="cbc:OutstandingQuantity/text()" />
+        <!-- Add more fields and nested forms for additional info as needed -->
+      </Repeat>
+    </Fields>
+  </Section>
+
+  <!-- Förpackningsinformation -->
+  <Section title="Förpackningsinformation">
+    <Fields>
+      <Repeat expr="/ubl:DespatchAdvice/cac:Shipment/cac:TransportHandlingUnit">
+        <Field name="Transportenhet SSCC" expr="cac:ID/text()" />
+        <Field name="Typ" expr="cbc:HandlingCode/text()" />
+        <Field name="Hanteringsinstruktioner" expr="cbc:HandlingInstructions/text()" />
+        <!-- Add nested repeats for packaging hierarchy as needed -->
+      </Repeat>
+    </Fields>
+  </Section>
+
+  <!-- Miljöinformation -->
+  <Section title="Miljöinformation">
+    <Fields>
+      <Form title="Bränslerapport">
+        <Field name="Bränsletyp" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cac:EnergyConsumption/cbc:EnergyTypeCode/text()" />
+        <Field name="Förbrukning" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cac:EnergyConsumption/cbc:ValueMeasure/text()" />
+        <Field name="Leverantör" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cac:EnergyConsumption/cac:SupplierParty/cac:Party/cac:PartyName/cbc:Name/text()" />
+        <Field name="Uppskattning" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cac:EnergyConsumption/cbc:ConsumptionTypeCode/text()" />
+      </Form>
+      <Form title="Miljöutsläpp">
+        <Field name="Utsläppstyp" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cac:Emissions/cbc:EmissionTypeCode/text()" />
+        <Field name="Mängd" expr="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:TransportMeans/cac:Emissions/cbc:ValueMeasure/text()" />
+      </Form>
+    </Fields>
+  </Section>
+</BusinessDocument>
