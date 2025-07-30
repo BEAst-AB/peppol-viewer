@@ -10,7 +10,6 @@
   <DocumentTitle>/ubl:DespatchAdvice/cbc:ID/text()</DocumentTitle>
   <TranslationXmlFile>dictionary-ada.xml</TranslationXmlFile>
 
-  <!-- Dokumentinformation -->
   <Section title="📋 Dokumentinformation" expr="/ubl:DespatchAdvice">
     <Fields id="Dokumentinformation" type="table" cols="2">
       <Field name="'Dokument-ID'" expr="cbc:ID/text()" />
@@ -23,7 +22,6 @@
     </Fields>
   </Section>
 
-  <!-- Parter -->
   <Section title="🏢 Partner" expr="/ubl:DespatchAdvice">
     <Fields type="block" class="party-info">
       <Form expr="cac:DespatchSupplierParty" title="concat('📤 Avsändare', ' (', cac:Party/cac:PartyName/cbc:Name/text(), ')')" display="list" class="party-card">
@@ -57,7 +55,6 @@
     </Fields>
   </Section>
 
-  <!-- Leveransinformation -->
   <Section title="🚚 Leveransinformation" expr="/ubl:DespatchAdvice">
     <Fields expr="cac:Shipment" type="table" cols="2">
       <Field name="'Leverans-ID'" expr="cbc:ID/text()" />
@@ -70,10 +67,14 @@
       <Field name="'Bruttevolym'" expr="cbc:GrossVolumeMeasure/text()" />
       <Field name="'Statistiskt värde'" expr="cbc:ValueAmount/text()" />
     </Fields>
+    <Fields type="table" cols="2">
+      <Field> 
     <Form expr="cac:Shipment/cac:Delivery" title="'🏢 Leveransplats'" class="nested-section">
       <Field name="'Adress'" expr="cac:DeliveryLocation/cac:Address" type="address" title="cac:DeliveryLocation/cbc:Name/text()"/>
       <Field name="'Koordinater'" expr="cac:DeliveryLocation/cac:Address/cac:LocationCoordinate" type="coordinates" />
     </Form>
+      </Field> 
+      <Field> 
     <Form expr="cac:Shipment" title="'🚛 Transportinformation'" display="list" class="nested-section">
       <Field name="'Transportläge'" expr="cbc:Information/text()" />
       <Field name="'Registreringsnummer'" expr="cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID/text()" />
@@ -81,17 +82,11 @@
       <Field name="'Tåg ID'" expr="cac:ShipmentStage/cac:TransportMeans/cac:RailTransport/cbc:TrainID/text()" />
       <Field name="'Fartyg ID'" expr="cac:ShipmentStage/cac:TransportMeans/cac:MaritimeTransport/cbc:VesselID/text()" />
     </Form>
+      </Field> 
+    </Fields>
   </Section>
 
-  <!-- Förpackningsinformation -->
   <Section title="📦 Förpackningsinformation" expr="/ubl:DespatchAdvice">
-    <!--Fields>
-      <Repeat expr="/ubl:DespatchAdvice/cac:Shipment/cac:TransportHandlingUnit">
-        <Field name="Transportenhet SSCC" expr="cac:ID/text()" />
-        <Field name="Typ" expr="cbc:HandlingCode/text()" />
-        <Field name="Hanteringsinstruktioner" expr="cbc:HandlingInstructions/text()" />
-      </Repeat>
-    </Fields-->
     <NestedSection expr="cac:Shipment/cac:TransportHandlingUnit" title="concat('📦 Transportenhet (SSCC: ', cbc:ID/text(), ')')">
       <Fields type="table" cols="2">
         <Field name="'Typ'" expr="cbc:TransportHandlingUnitTypeCode/text()" />
@@ -128,31 +123,32 @@
     </NestedSection>
   </Section>
 
-  <!-- Miljöinformation -->
   <Section title="🌱 Miljöinformation" expr="/ubl:DespatchAdvice">
-    <Fields>
+    <Fields type="table" cols="2">
+      <Field> 
       <Form expr="cac:Shipment/cac:Consignment/cac:OriginalDespatchTransportationService/cac:TransportEquipment" title="'⛽ Bränslerapport'" display="list" class="nested-section">
         <Field name="'Bränsletyp'" expr="cbc:Description/text()" />
         <Field name="'Förbrukning'" expr="concat(cac:MeasurementDimension/cbc:Measure/text(), ' ', cac:MeasurementDimension/cbc:Measure/@unitCode)" />
         <Field name="'Leverantör'" expr="cac:ProviderParty/cac:PartyName/cbc:Name/text()" />
         <Field name="'Uppskattning'" expr="cac:MeasurementDimension/cbc:Description/text()" />
       </Form>
+      </Field> 
+      <Field> 
       <Form expr="cac:Shipment/cac:Consignment/cac:OriginalDespatchTransportationService/cac:EnvironmentalEmission" title="'💨 Miljöutsläpp'" display="list" class="nested-section">
         <Field name="'Utsläppstyp'" expr="concat(cbc:EnvironmentalEmissionTypeCode/@name, ' (', cbc:EnvironmentalEmissionTypeCode/text(), ')')" />
         <Field name="'Mängd'" expr="concat(cbc:ValueMeasure/text(), ' (', cbc:ValueMeasure/@unitCode, ')')" />
       </Form>
+      </Field> 
     </Fields>
   </Section>
 
-  <!-- Artikelrader -->
   <Section title="📦 Artikelrader" expr="/ubl:DespatchAdvice">
     <Fields>
-      <Repeat id="Line" expr="cac:DespatchLine">
-        <Field id="LineID" name="'Rad-ID'" expr="cbc:ID/text()" />
+      <Repeat expr="cac:DespatchLine" lastColumnAsExpandedRow="true">
+        <Field name="'Rad-ID'" expr="cbc:ID/text()" />
         <Field name="'Artikelnamn'" expr="cac:Item/cbc:Name/text()" />
-        <!--Field name="Artikelnummer" expr="cac:DespatchLine/cac:Item/cac:SellersItemIdentification/cbc:ID/text()" /-->
-		<Field id="Item" name="'Artikelnummer'">
-          <Form id="ItemID" expr="cac:Item" title="'Identifieringar:'" display="list" class="nested-section">
+		<Field name="'Artikelnummer'">
+          <Form expr="cac:Item" title="'Identifieringar:'" display="list" class="nested-section">
 		    <Field name="'Köpare'" expr="cac:BuyersItemIdentification/cbc:ID/text()" />
 		    <Field name="'Säljare'" expr="cac:SellersItemIdentification/cbc:ID/text()" />
 		    <Field name="'Tillverkare'" expr="cac:ManufacturersItemIdentification/cbc:ID/text()" />
@@ -162,11 +158,14 @@
 		</Field>
         <Field name="'Levererad kvantitet'" expr="concat(cbc:DeliveredQuantity/text(), ' ', cbc:DeliveredQuantity/@unitCode)" />
         <Field name="'Utestående kvantitet'" expr="concat(cbc:OutstandingQuantity/text(), ' ', cbc:OutstandingQuantity/@unitCode)" />
-        <!-- Add more fields and nested forms for additional info as needed -->
         <Field name="'Ytterligare information'">
+          <Fields type="table" cols="4">
+            <Field> 
           <Form expr="cac:Item" title="concat('🏭 Tillverkare: ', cac:ManufacturerParty/cac:PartyName/cbc:Name/text())" display="list" class="nested-section">
             <Field name="'Adress'" expr="cac:ManufacturerParty/cac:PostalAddress" type="address"/>
           </Form>
+            </Field>		  
+            <Field>		  
           <Form expr="cac:Item/cac:HazardousItem" title="'⚠️ Farlig vara'" display="list" class="nested-section">
             <Text expr="true()" exprTrue="'⚠️ Farlig'" class="danger-indicator"/>
 		    <Field name="'UN-kod'" expr="cbc:UNDGCode/text()" />
@@ -176,16 +175,8 @@
 		    <Field name="'Nettvolym'" expr="concat(cbc:NetVolumeMeasure/text(), ' ', cbc:NetVolumeMeasure/@unitCode)" />
 		    <Field name="'Nödtemperatur'" expr="concat(cac:EmergencyTemperature/cbc:Measure/text(), ' ', cac:EmergencyTemperature/cbc:Measure/@unitCode)" />
           </Form>
-          <Form id="AddlProp" title="'📋 Ytterligare egenskaper'" display="list" class="nested-section">
-		    <Repeat id="RepeatAddlItemProp" expr="cac:Item/cac:AdditionalItemProperty" display='list'>
-              <Field id="AddlItemProp" name="cbc:Name/text()" expr="cbc:Value/text()" />
-              <Field name="'Värde'" expr="concat(cbc:ValueQuantity/text(), ' ', cbc:ValueQuantity/@unitCode)" />
-			  <Field name="'Beskrivning'" expr="cbc:ValueQualifier/text()" />
-            </Repeat>
-            <!--Field name="cac:Item/cac:AdditionalItemProperty/cbc:Name/text()" expr="cac:Item/cac:AdditionalItemProperty/cbc:Value/text()" />
-            <Field name="'Värde'" expr="concat(cac:Item/cac:AdditionalItemProperty/cbc:ValueQuantity/text(), ' ', cac:Item/cac:AdditionalItemProperty/cbc:ValueQuantity/@unitCode)" />
-            <Field name="'Beskrivning'" expr="cac:Item/cac:AdditionalItemProperty/cbc:ValueQualifier/text()" /-->
-          </Form>
+            </Field>		  
+            <Field>		  
           <Form expr="cac:Item/cac:ItemInstance" title="'📅 Produktinformation'" display="list" class="nested-section">
 		    <Field name="'Tillverkningsdatum'" expr="concat(cbc:ManufactureDate/text(), ' ',  cbc:ManufactureTime/text())" />
 		    <Field name="'Bäst före'" expr="cbc:BestBeforeDate/text()" />
@@ -193,11 +184,24 @@
 		    <Field name="'Batch-nummer'" expr="cac:LotIdentification/cbc:LotNumberID/text()" />
 		    <Field name="'Utgångsdatum'" expr="cac:LotIdentification/cbc:ExpiryDate/text()" />
           </Form>
+            </Field>		  
+            <Field>		  
           <Form expr="cac:Item/cac:Certificate" title="'🏆 Certifiering'" display="list" class="nested-section">
 		    <Field name="'Certifikat-ID'" expr="cbc:ID/text()" />
 		    <Field name="'Typ'" expr="cbc:CertificateType/text()" />
 		    <Field name="'Kommentar'" expr="cbc:Remarks/text()" />
           </Form>
+            </Field>		  
+            <Field>		  
+          <Form id="AddlProp" title="'📋 Ytterligare egenskaper'" display="list" class="nested-section">
+		    <Repeat expr="cac:Item/cac:AdditionalItemProperty" display='list'>
+              <Field name="cbc:Name/text()" expr="cbc:Value/text()" />
+              <Field name="'Värde'" expr="concat(cbc:ValueQuantity/text(), ' ', cbc:ValueQuantity/@unitCode)" />
+			  <Field name="'Beskrivning'" expr="cbc:ValueQualifier/text()" />
+            </Repeat>
+          </Form>
+            </Field>		  
+          </Fields>
 		</Field>
       </Repeat>
     </Fields>
