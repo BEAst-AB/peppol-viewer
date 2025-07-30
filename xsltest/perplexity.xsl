@@ -224,7 +224,6 @@
         <span>
           <xsl:value-of select="@icon"/>
           <xsl:text> </xsl:text>
-          <!--xsl:value-of select="@title"/-->
 		  <xsl:evaluate xpath="@title" context-item="$childContext"/>
         </span>
       </div>
@@ -260,24 +259,24 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:choose>
-    <xsl:when test="@type='block'">
-      <div class="{@class}">
-        <xsl:apply-templates select="beast:Field | beast:Repeat | beast:Form | beast:Text">
-          <xsl:with-param name="context" select="$childContext"/>
-		  <xsl:with-param name="display" select="$overrideDisplay"/>
-        </xsl:apply-templates>
-      </div>
-    </xsl:when>
-    <xsl:otherwise>
-    <table class="table table-bordered table-sm align-middle">
-      <tbody>
-        <xsl:apply-templates select="beast:Field | beast:Repeat | beast:Form | beast:Text">
-          <xsl:with-param name="context" select="$childContext"/>
-		  <xsl:with-param name="display" select="$overrideDisplay"/>
-        </xsl:apply-templates>
-      </tbody>
-    </table>
-    </xsl:otherwise>
+      <xsl:when test="@type='block'">
+        <div class="{@class}">
+          <xsl:apply-templates select="beast:Field | beast:Repeat | beast:Form | beast:Text">
+            <xsl:with-param name="context" select="$childContext"/>
+		    <xsl:with-param name="display" select="$overrideDisplay"/>
+          </xsl:apply-templates>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <table class="table table-bordered table-sm align-middle">
+          <tbody>
+            <xsl:apply-templates select="beast:Field | beast:Repeat | beast:Form | beast:Text">
+              <xsl:with-param name="context" select="$childContext"/>
+		      <xsl:with-param name="display" select="$overrideDisplay"/>
+            </xsl:apply-templates>
+          </tbody>
+        </table>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -285,7 +284,7 @@
     <xsl:param name="context"/>
     <xsl:param name="display"/>
     <xsl:choose>
-    <xsl:when test="not(empty(@expr))">
+      <xsl:when test="not(empty(@expr))">
         <xsl:variable name="value">
           <xsl:evaluate xpath="@expr" context-item="$context"/>
         </xsl:variable>
@@ -294,7 +293,7 @@
           <xsl:with-param name="context" select="$context"/>
           <xsl:with-param name="display" select="$display"/>
         </xsl:call-template>
-    </xsl:when>
+      </xsl:when>
     </xsl:choose>
   </xsl:template>
 
@@ -306,82 +305,60 @@
       <xsl:evaluate xpath="@name" context-item="$context"/>
     </xsl:variable>
     <xsl:choose>
-    <xsl:when test="not(empty(@expr))">
-    <xsl:choose>
-    <xsl:when test="$display='list' and (empty(@type) or @type='')">
-      <li><strong><xsl:value-of select="$name"/>:</strong> 
-        <xsl:variable name="value">
-          <xsl:evaluate xpath="@expr" context-item="$context"/>
-        </xsl:variable>
-        <xsl:text> </xsl:text>
-		<!--xsl:value-of select="$value"/-->
-        <xsl:call-template name="formatFieldValue">
-          <xsl:with-param name="field" select="."/>
+      <xsl:when test="not(empty(@expr))">
+        <xsl:choose>
+          <xsl:when test="$display='list' and (empty(@type) or @type='')">
+            <li><strong><xsl:value-of select="$name"/>:</strong> 
+            <xsl:variable name="value">
+              <xsl:evaluate xpath="@expr" context-item="$context"/>
+            </xsl:variable>
+            <xsl:text> </xsl:text>
+            <xsl:call-template name="formatFieldValue">
+              <xsl:with-param name="field" select="."/>
+              <xsl:with-param name="context" select="$context"/>
+              <xsl:with-param name="display" select="$display"/>
+            </xsl:call-template>
+            </li>
+          </xsl:when>
+          <xsl:when test="@type='address'">
+            <xsl:call-template name="formatAddress">
+              <xsl:with-param name="context" select="$context"/>
+              <xsl:with-param name="expr" select="@expr"/>
+              <xsl:with-param name="title" select="@title"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:when test="@type='coordinates'">
+            <xsl:call-template name="formatCoordinates">
+              <xsl:with-param name="context" select="$context"/>
+              <xsl:with-param name="expr" select="@expr"/>
+              <xsl:with-param name="title" select="@title"/>
+            </xsl:call-template>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:if test="(empty(parent::node()/@cols) or (parent::node()/@cols != '' and (position() mod parent::node()/@cols) = 1)) = true()">
+              <xsl:text disable-output-escaping="yes">&lt;tr></xsl:text>
+            </xsl:if>
+            <th>
+              <xsl:value-of select="$name"/>
+            </th>
+            <td>
+              <xsl:call-template name="formatFieldValue">
+                <xsl:with-param name="field" select="."/>
+                <xsl:with-param name="context" select="$context"/>
+                <xsl:with-param name="display" select="$display"/>
+              </xsl:call-template>
+            </td>
+            <xsl:if test="(empty(parent::node()/@cols) or (parent::node()/@cols != '' and ( ((position() mod parent::node()/@cols) = 0) or (position() = last()) ))) = true()">
+              <xsl:text disable-output-escaping="yes">&lt;/tr></xsl:text>
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="beast:NestedSection | beast:Fields | beast:Field | beast:Repeat | beast:Form | beast:Text">
           <xsl:with-param name="context" select="$context"/>
-          <xsl:with-param name="display" select="$display"/>
-        </xsl:call-template>
-	  </li>
-    </xsl:when>
-    <xsl:when test="@type='address'">
-      <xsl:call-template name="formatAddress">
-        <xsl:with-param name="context" select="$context"/>
-        <xsl:with-param name="expr" select="@expr"/>
-        <xsl:with-param name="title" select="@title"/>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:when test="@type='coordinates'">
-      <xsl:call-template name="formatCoordinates">
-        <xsl:with-param name="context" select="$context"/>
-        <xsl:with-param name="expr" select="@expr"/>
-        <xsl:with-param name="title" select="@title"/>
-      </xsl:call-template>
-    </xsl:when>
-    <xsl:otherwise>
-	<!--xsl:if test="name(parent::node()) = 'Fields'">
-	<xsl:message>
-	  Parent: <xsl:value-of select="name(parent::node())"/> Cols: <xsl:value-of select="parent::node()/@cols"/> position: <xsl:value-of select="position()"/> Mod: <xsl:value-of select="(position() mod parent::node()/@cols)"/> last: <xsl:value-of select="last()"/> tr-open: <xsl:value-of select="empty(parent::node()/@cols) or (name(parent::node()) = 'Fields' and parent::node()/@cols != '' and (position() mod parent::node()/@cols) = 1)"/> tr-close: <xsl:value-of select="empty(parent::node()/@cols) or (name(parent::node()) = 'Fields' and parent::node()/@cols != '' and ( ((position() mod parent::node()/@cols) = 0) or (position() = last()) ))"/>
-	</xsl:message>
-	</xsl:if-->
-	<!--xsl:choose>
-	<xsl:when test="name(parent::node()) = 'Fields' and parent::node()/@cols != '' and (position() mod parent::node()/@cols) = 1">
-      <tr>
-	</xsl:when>
-	<xsl:when test="name(parent::node()) = 'Fields' and parent::node()/@cols = ''">
-      <tr>
-	</xsl:when>
-	</xsl:choose-->
-	<xsl:if test="(empty(parent::node()/@cols) or (parent::node()/@cols != '' and (position() mod parent::node()/@cols) = 1)) = true()">
-      <xsl:text disable-output-escaping="yes">&lt;tr></xsl:text>
-	</xsl:if>
-      <th>
-        <xsl:value-of select="$name"/>
-      </th>
-      <td>
-        <xsl:call-template name="formatFieldValue">
-          <xsl:with-param name="field" select="."/>
-          <xsl:with-param name="context" select="$context"/>
-          <xsl:with-param name="display" select="$display"/>
-        </xsl:call-template>
-      </td>
-	<xsl:if test="(empty(parent::node()/@cols) or (parent::node()/@cols != '' and ( ((position() mod parent::node()/@cols) = 0) or (position() = last()) ))) = true()">
-      <xsl:text disable-output-escaping="yes">&lt;/tr></xsl:text>
-	</xsl:if>
-	<!--xsl:choose>
-	<xsl:when test="name(parent::node()) = 'Fields' and parent::node()/@cols != '' and ( (position() mod parent::node()/@cols) = 0) or (position() = last()) )">
-    </tr>
-	</xsl:when>
-	<xsl:when test="name(parent::node()) = 'Fields' and parent::node()/@cols = ''">
-    </tr>
-	</xsl:when>
-	</xsl:choose-->
-    </xsl:otherwise>
-    </xsl:choose>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:apply-templates select="beast:NestedSection | beast:Fields | beast:Repeat | beast:Form | beast:Text">
-        <xsl:with-param name="context" select="$context"/>
-      </xsl:apply-templates>
-    </xsl:otherwise>
+        </xsl:apply-templates>
+      </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -390,49 +367,46 @@
     <xsl:param name="context"/>
     <xsl:param name="display"/>
 	<xsl:if test="not(empty($field/@expr))">
-    <xsl:variable name="value">
-      <xsl:evaluate xpath="$field/@expr" context-item="$context"/>
-    </xsl:variable>
-	<xsl:choose>
-	  <xsl:when test="not(empty($field/@class))">
-		<xsl:choose>
-		  <xsl:when test="$value = false() and not(empty($field/@exprFalse))">
-			<xsl:variable name="valueFalse">
-			  <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
-			</xsl:variable>
+      <xsl:variable name="value">
+        <xsl:evaluate xpath="$field/@expr" context-item="$context"/>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="not(empty($field/@class))">
+          <xsl:choose>
+            <xsl:when test="$value = false() and not(empty($field/@exprFalse))">
+              <xsl:variable name="valueFalse">
+                <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
+              </xsl:variable>
 			<span class="{$field/@class}"><xsl:value-of select="$valueFalse"/></span>
-		  </xsl:when>
-		  <xsl:when test="$value = true() and not(empty($field/@exprTrue))">
-			<xsl:variable name="valueTrue">
-			  <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
-			</xsl:variable>
-			<span class="{$field/@class}"><xsl:value-of select="$valueTrue"/></span>
-		  </xsl:when>
-		  <!--xsl:otherwise>
-			<span class="{$field/@class}"><xsl:value-of select="$value"/></span>
-		  </xsl:otherwise-->
-		</xsl:choose>
-	  </xsl:when>
-	  <xsl:otherwise>
-		<xsl:choose>
-		  <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'false'">
-			<xsl:variable name="valueFalse">
-			  <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
-			</xsl:variable>
-			<xsl:value-of select="$valueFalse"/>
-		  </xsl:when>
-		  <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'true'">
-			<xsl:variable name="valueTrue">
-			  <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
-			</xsl:variable>
-			<xsl:value-of select="$valueTrue"/>
-		  </xsl:when>
-		  <xsl:otherwise>
-			<xsl:value-of select="$value"/>
-		  </xsl:otherwise>
-		</xsl:choose>
-	  </xsl:otherwise>
-	</xsl:choose>
+            </xsl:when>
+            <xsl:when test="$value = true() and not(empty($field/@exprTrue))">
+              <xsl:variable name="valueTrue">
+                <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
+              </xsl:variable>
+              <span class="{$field/@class}"><xsl:value-of select="$valueTrue"/></span>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'false'">
+              <xsl:variable name="valueFalse">
+                <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
+              </xsl:variable>
+              <xsl:value-of select="$valueFalse"/>
+            </xsl:when>
+            <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'true'">
+              <xsl:variable name="valueTrue">
+                <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
+              </xsl:variable>
+              <xsl:value-of select="$valueTrue"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$value"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
 	</xsl:if>
   </xsl:template>
 
@@ -440,6 +414,7 @@
   <xsl:template match="beast:Repeat">
     <xsl:param name="context"/>
     <xsl:param name="display"/>
+	<xsl:variable name="repeatExpr" select="@expr"/>
 	<xsl:variable name="rowContext">
       <xsl:choose>
         <xsl:when test="not(empty(@expr))">
@@ -451,101 +426,112 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="currentNode" select="."/>
-    <xsl:variable name="nodes">
-	  <xsl:evaluate xpath="@expr" context-item="$rowContext"/>
-	</xsl:variable>
-    <xsl:for-each select="$nodes">
-      <xsl:variable name="currentDataNode" select="./child::*"/>
-      <thead>
-      <tr>
-        <xsl:for-each select="$currentNode/beast:Field">
-          <xsl:variable name="name">
-            <xsl:evaluate xpath="@name" context-item="$rowContext"/>
-          </xsl:variable>
-          <th>
-            <xsl:value-of select="$name"/>
-          </th>
-        </xsl:for-each>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <xsl:for-each select="$currentNode/beast:Field">
-          <td>
-            <!--xsl:variable name="val">
-              <xsl:evaluate xpath="@expr" context-item="$currentDataNode"/>
+    <xsl:choose>
+      <xsl:when test="not(empty(@display)) and @display='list'">
+        <xsl:for-each select="$rowContext/child::*">
+          <xsl:variable name="currentDataNode" select="."/>
+          <xsl:if test="position() != 1"><br/></xsl:if>
+          <xsl:for-each select="$currentNode/beast:Field[not(empty(@expr))]">
+            <xsl:variable name="name">
+              <xsl:evaluate xpath="@name" context-item="$currentDataNode"/>
             </xsl:variable>
-            <xsl:value-of select="$val"/-->
-			<xsl:choose>
-              <xsl:when test="not(empty(@expr))">
-                <xsl:call-template name="formatFieldValue">
-                  <xsl:with-param name="field" select="."/>
-                  <xsl:with-param name="context" select="$currentDataNode"/>
-                  <xsl:with-param name="display" select="$display"/>
-                </xsl:call-template>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates select="beast:NestedSection | beast:Fields | beast:Repeat | beast:Form | beast:Text">
-                  <xsl:with-param name="context" select="$currentDataNode/child::*"/>
-                  <xsl:with-param name="display" select="$display"/>
-                </xsl:apply-templates>
-              </xsl:otherwise>
-			</xsl:choose>
-          </td>
+            <li><strong><xsl:value-of select="$name"/>: </strong><xsl:call-template name="formatFieldValue">
+                        <xsl:with-param name="field" select="."/>
+                        <xsl:with-param name="context" select="$currentDataNode"/>
+                        <xsl:with-param name="display" select="$display"/>
+                      </xsl:call-template>
+            </li>
+          </xsl:for-each>
         </xsl:for-each>
-      </tr>
-      </tbody>
-    </xsl:for-each>
+      </xsl:when>
+      <xsl:otherwise>
+        <thead>
+          <tr>
+            <xsl:for-each select="$currentNode/beast:Field">
+              <xsl:variable name="name">
+                <xsl:evaluate xpath="@name" context-item="$rowContext/child::*[1]"/>
+              </xsl:variable>
+              <th>
+                <xsl:value-of select="$name"/>
+              </th>
+            </xsl:for-each>
+          </tr>
+        </thead>
+        <tbody>
+          <xsl:for-each select="$rowContext/child::*">
+            <xsl:variable name="currentDataNode" select="."/>
+            <tr>
+              <xsl:for-each select="$currentNode/beast:Field">
+                <td>
+      			  <xsl:choose>
+                    <xsl:when test="not(empty(@expr))">
+                      <xsl:call-template name="formatFieldValue">
+                        <xsl:with-param name="field" select="."/>
+                        <xsl:with-param name="context" select="$currentDataNode"/>
+                        <xsl:with-param name="display" select="$display"/>
+                      </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:apply-templates select="beast:NestedSection | beast:Fields | beast:Repeat | beast:Form | beast:Text">
+                        <xsl:with-param name="context" select="$currentDataNode/child::*"/>
+                        <xsl:with-param name="display" select="$display"/>
+                      </xsl:apply-templates>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </td>
+              </xsl:for-each>
+            </tr>
+          </xsl:for-each>
+        </tbody>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- FORM TEMPLATE (for nested groups) -->
   <xsl:template match="beast:Form">
     <xsl:param name="context"/>
+	<xsl:variable name="tempContext">
+	  <xsl:element name="Temp">
+	    <xsl:copy-of select="$context"/>
+	  </xsl:element>
+    </xsl:variable>
 	<xsl:variable name="childContext">
       <xsl:choose>
         <xsl:when test="not(empty(@expr))">
-		  <xsl:evaluate xpath="concat(@expr, '/child::*')" context-item="$context"/>
+		  <xsl:evaluate xpath="concat('Temp/', @expr, '/child::*')" context-item="$tempContext"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:copy-of select="$context"/>
+		  <xsl:evaluate xpath="'Temp/child::*'" context-item="$tempContext"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <!--tr>
-      <th colspan="2">
-        <xsl:value-of select="@title"/>
-      </th>
-    </tr-->
 	<xsl:variable name="varDisplay" select="@display"/>
     <div class="{@class}" style="{@style}">
-	  <div class="nested-title"><!--xsl:value-of select="@title"/--><xsl:evaluate xpath="@title" context-item="$childContext"/></div>
-	<!--xsl:message>
-	  Title: <xsl:value-of select="@title"/> Display: <xsl:value-of select="$varDisplay"/>
-	</xsl:message-->
-    <xsl:choose>
-    <xsl:when test="@display='list'">
-    <xsl:apply-templates select="beast:Text">
-      <xsl:with-param name="context" select="$childContext"/>
-      <xsl:with-param name="display" select="$varDisplay"/>
-    </xsl:apply-templates>
-        <ul class="property-list">
-    <xsl:apply-templates select="beast:Field[empty(@type)]">
-      <xsl:with-param name="context" select="$childContext"/>
-      <xsl:with-param name="display" select="$varDisplay"/>
-    </xsl:apply-templates>
-        </ul>
-    <xsl:apply-templates select="beast:Field[not(empty(@type))] | beast:Repeat | beast:Form">
-      <xsl:with-param name="context" select="$childContext"/>
-      <xsl:with-param name="display" select="$varDisplay"/>
-    </xsl:apply-templates>
-    </xsl:when>
-    <xsl:otherwise>
-    <xsl:apply-templates select="beast:Field | beast:Form | beast:Repeat | beast:Text">
-      <xsl:with-param name="context" select="$childContext"/>
-      <xsl:with-param name="display" select="$varDisplay"/>
-    </xsl:apply-templates>
-    </xsl:otherwise>
-    </xsl:choose>
+	  <div class="nested-title"><xsl:evaluate xpath="@title" context-item="$childContext"/></div>
+      <xsl:choose>
+        <xsl:when test="@display='list'">
+          <xsl:apply-templates select="beast:Text">
+            <xsl:with-param name="context" select="$childContext"/>
+            <xsl:with-param name="display" select="$varDisplay"/>
+          </xsl:apply-templates>
+          <ul class="property-list">
+            <xsl:apply-templates select="beast:Field[empty(@type)] | beast:Repeat | beast:Form">
+              <xsl:with-param name="context" select="$childContext"/>
+              <xsl:with-param name="display" select="$varDisplay"/>
+            </xsl:apply-templates>
+          </ul>
+          <xsl:apply-templates select="beast:Field[not(empty(@type))]">
+            <xsl:with-param name="context" select="$childContext"/>
+            <xsl:with-param name="display" select="$varDisplay"/>
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="beast:Field | beast:Form | beast:Repeat | beast:Text">
+            <xsl:with-param name="context" select="$childContext"/>
+            <xsl:with-param name="display" select="$varDisplay"/>
+          </xsl:apply-templates>
+        </xsl:otherwise>
+      </xsl:choose>
 	</div>
   </xsl:template>
 
@@ -562,10 +548,6 @@
 	<xsl:variable name="varContext">
 	  <xsl:evaluate xpath="$expr" context-item="$context"/>
 	</xsl:variable>
-	<!--xsl:message>
-	  Expr: <xsl:value-of select="$expr"/>
-	  Context: <xsl:copy-of select="$varContext"/>
-	</xsl:message-->
       <div class="address-block">
 	    <xsl:if test="not(empty($title))">
         <strong><xsl:evaluate xpath="$title" context-item="$context"/></strong><br/>
