@@ -10,7 +10,8 @@
 				xmlns:ubl="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2"
                 xmlns:beast="https://beast.se/xmltools"
 				xmlns:dict="https://beast.se/dictionary"
-				exclude-result-prefixes="xs xsi xsl xs fn sbdh ubl cac cbc beast dict">
+                xmlns:doc="https://beast.se/xmltools"
+				exclude-result-prefixes="xs xsi xsl xs fn sbdh ubl cac cbc beast dict doc">
 
   <xsl:param name="paramDataXml" required="yes" />
   <xsl:param name="paramLang" required="yes" />
@@ -18,8 +19,14 @@
 
   <!-- The business XML document is passed as a parameter -->
   <xsl:variable name="doc" select="document($paramDataXml)"/>
+  <!--xsl:variable name="varTranslationXmlFile" select="concat($paramUrlRepo, &quot;/refs/heads/main/translations/&quot;,/doc:BusinessDocument/doc:TranslationXmlFile)"/>
+  <xsl:variable name="varTranslationDefaultXmlFile" select="concat($paramUrlRepo, &quot;/refs/heads/main/translations/dictionary.xml&quot;)"/-->
+  <xsl:variable name="varTranslationXmlFile" select="concat(&quot;../translations/&quot;,/doc:BusinessDocument/doc:TranslationXmlFile)"/>
+  <xsl:variable name="varTranslationDefaultXmlFile" select="&quot;../translations/dictionary.xml&quot;"/>
 
   <xsl:output method="html" encoding="UTF-8" indent="yes"/>
+
+  <xsl:import href="Dictionary.xsl"/>
 
   <xsl:template match="/beast:BusinessDocument">
     <html lang="sv">
@@ -186,7 +193,7 @@
           <xsl:text> </xsl:text>
           <xsl:value-of select="@title"/>
         </span>
-        <span class="expand-indicator badge bg-secondary">Expanderad</span>
+        <span class="expand-indicator badge bg-secondary"><xsl:call-template name="translate"><xsl:with-param name="keyName" select="'Expanded'"/></xsl:call-template></span>
       </div>
       <div class="section-content card-body">
         <xsl:apply-templates select="beast:NestedSection | beast:Fields | beast:Repeat | beast:Form">

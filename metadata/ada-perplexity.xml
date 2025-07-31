@@ -12,9 +12,9 @@
 
   <Section title="📋 Dokumentinformation" expr="/ubl:DespatchAdvice">
     <Fields id="Dokumentinformation" type="table" cols="3">
-      <Field name="'Dokument-ID'" expr="cbc:ID/text()" />
-      <Field name="'Utfärdandedatum'" expr="concat( cbc:IssueDate/text(), ' ', cbc:IssueTime/text() )" />
-      <Field name="'Utfärdandetid'" expr="cbc:IssueTime/text()" />
+      <Field name="dict:translate('DocumentID')" expr="cbc:ID/text()" />
+      <Field name="dict:translate('IssueDateTime')" expr="concat( cbc:IssueDate/text(), ' ', cbc:IssueTime/text() )" />
+      <Field name="dict:translate('IssueTime')" expr="cbc:IssueTime/text()" />
       <Field name="'Dokumentstatus'" expr="cbc:DocumentStatusCode/text()" />
       <Field name="'Leveransaviseringstyp'" expr="cbc:DespatchAdviceTypeCode/text()" />
       <Field name="'Orderreferens'" expr="cac:OrderReference/cbc:ID/text()" />

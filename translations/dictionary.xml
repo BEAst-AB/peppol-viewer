@@ -20,6 +20,10 @@
     <entry key="Standard">Standardprodukt</entry>
     <entry key="Seller">Säljareprodukt</entry>
     <entry key="Manufacturer">Tillverkareprodukt</entry>
+    <entry key="Expanded">Expanderad</entry>
+    <entry key="DocumentID">Dokument-ID</entry>
+    <entry key="IssueDateTime">Utfärdandedatum</entry>
+    <entry key="IssueTime">Utfärdandetid</entry>
 </dict:sv>
 
 <dict:en>
@@ -42,5 +46,9 @@
     <entry key="Standard">Standard</entry>
     <entry key="Seller">Seller</entry>
     <entry key="Manufacturer">Manufacturer</entry>
+    <entry key="Expanded">Expanded</entry>
+    <entry key="DocumentID">Document-ID</entry>
+    <entry key="IssueDateTime">Issue Date Time</entry>
+    <entry key="IssueTime">Issue Time</entry>
 </dict:en>
 </dict:dictionary>
