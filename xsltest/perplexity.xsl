@@ -280,36 +280,34 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="beast:Text">
-    <xsl:param name="context"/>
-    <xsl:param name="display"/>
-    <xsl:choose>
-      <xsl:when test="not(empty(@expr))">
-        <xsl:variable name="value">
-          <xsl:evaluate xpath="@expr" context-item="$context"/>
-        </xsl:variable>
-        <xsl:call-template name="formatFieldValue">
-          <xsl:with-param name="field" select="."/>
-          <xsl:with-param name="context" select="$context"/>
-          <xsl:with-param name="display" select="$display"/>
-        </xsl:call-template>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:template>
-
   <xsl:template match="beast:Field">
     <xsl:param name="context"/>
     <xsl:param name="display"/>
+	<xsl:variable name="tempContext">
+	  <xsl:element name="Temp">
+	    <xsl:copy-of select="$context"/>
+	  </xsl:element>
+    </xsl:variable>
+	<xsl:variable name="childContext">
+      <xsl:choose>
+        <xsl:when test="not(empty(@expr))">
+		  <xsl:evaluate xpath="concat('Temp/', @expr, '/child::*')" context-item="$tempContext"/>
+        </xsl:when>
+        <xsl:otherwise>
+		  <xsl:evaluate xpath="'Temp/child::*'" context-item="$tempContext"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="name">
       <xsl:if test="not(empty(@name))">
-        <xsl:evaluate xpath="@name" context-item="$context"/>
+        <xsl:evaluate xpath="concat('Temp/', @name)" context-item="$tempContext"/>
       </xsl:if>
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="$display='list' and (empty(@type) or @type='')">
         <li><strong><xsl:value-of select="$name"/>:</strong> 
         <xsl:variable name="value">
-          <xsl:evaluate xpath="@expr" context-item="$context"/>
+          <xsl:evaluate xpath="concat('Temp/', @expr)" context-item="$tempContext"/>
         </xsl:variable>
         <xsl:text> </xsl:text>
         <xsl:call-template name="formatFieldValue">
@@ -344,9 +342,18 @@
         </xsl:if>
         <td style="vertical-align: top; text-align: left;">
           <xsl:if test="parent::node()/@cols != '' and position() = last()">
-            <xsl:attribute name="colspan">
-              <xsl:value-of select="parent::node()/@cols - (position() mod parent::node()/@cols) + 1"/>
-            </xsl:attribute>
+            <xsl:choose>
+              <xsl:when test="$name != ''">
+                <xsl:attribute name="colspan">
+                  <xsl:value-of select="(2 * parent::node()/@cols) - (position() mod parent::node()/@cols)"/>
+                </xsl:attribute>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:attribute name="colspan">
+                  <xsl:value-of select="parent::node()/@cols - (position() mod parent::node()/@cols) + 1"/>
+                </xsl:attribute>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:if>
           <xsl:choose>
             <xsl:when test="not(empty(@expr))">
@@ -370,58 +377,10 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template name="formatFieldValue">
-    <xsl:param name="field"/>
-    <xsl:param name="context"/>
-    <xsl:param name="display"/>
-	<xsl:if test="not(empty($field/@expr))">
-      <xsl:variable name="value">
-        <xsl:evaluate xpath="$field/@expr" context-item="$context"/>
-      </xsl:variable>
-      <xsl:choose>
-        <xsl:when test="not(empty($field/@class))">
-          <xsl:choose>
-            <xsl:when test="$value = false() and not(empty($field/@exprFalse))">
-              <xsl:variable name="valueFalse">
-                <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
-              </xsl:variable>
-			<span class="{$field/@class}"><xsl:value-of select="$valueFalse"/></span>
-            </xsl:when>
-            <xsl:when test="$value = true() and not(empty($field/@exprTrue))">
-              <xsl:variable name="valueTrue">
-                <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
-              </xsl:variable>
-              <span class="{$field/@class}"><xsl:value-of select="$valueTrue"/></span>
-            </xsl:when>
-          </xsl:choose>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:choose>
-            <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'false'">
-              <xsl:variable name="valueFalse">
-                <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
-              </xsl:variable>
-              <xsl:value-of select="$valueFalse"/>
-            </xsl:when>
-            <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'true'">
-              <xsl:variable name="valueTrue">
-                <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
-              </xsl:variable>
-              <xsl:value-of select="$valueTrue"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:value-of select="$value"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
-	</xsl:if>
-  </xsl:template>
-
   <xsl:template match="beast:Repeat">
     <xsl:param name="context"/>
     <xsl:param name="display"/>
-	<xsl:variable name="repeatExpr" select="@expr"/>
+	<xsl:variable name="cols" select="@cols"/>
 	<xsl:variable name="rowContext">
       <xsl:choose>
         <xsl:when test="not(empty(@expr))">
@@ -433,23 +392,41 @@
       </xsl:choose>
     </xsl:variable>
     <xsl:variable name="currentNode" select="."/>
+    <xsl:variable name="numberOfColumns" select="count($currentNode/child::*)"/>
+	<xsl:variable name="repeatType">
+      <xsl:choose>
+        <xsl:when test="name($currentNode/child::*[1])='Form'">
+		  <xsl:value-of select="'Region'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'Field'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:choose>
-      <xsl:when test="not(empty(@display)) and @display='list'">
+      <xsl:when test="$repeatType = 'Region'">
+        <table class="table table-bordered table-sm align-middle"><tbody>
         <xsl:for-each select="$rowContext/child::*">
           <xsl:variable name="currentDataNode" select="."/>
-          <xsl:if test="position() != 1"><br/></xsl:if>
-          <xsl:for-each select="$currentNode/beast:Field[not(empty(@expr))]">
-            <xsl:variable name="name">
-              <xsl:evaluate xpath="@name" context-item="$currentDataNode"/>
-            </xsl:variable>
-            <li><strong><xsl:value-of select="$name"/>: </strong><xsl:call-template name="formatFieldValue">
-                        <xsl:with-param name="field" select="."/>
-                        <xsl:with-param name="context" select="$currentDataNode"/>
-                        <xsl:with-param name="display" select="$display"/>
-                      </xsl:call-template>
-            </li>
+          <xsl:if test="$cols = '' and position() != 1"><br/></xsl:if>
+          <xsl:if test="position() mod $cols = 1">
+            <xsl:text disable-output-escaping="yes">&lt;tr></xsl:text>
+          </xsl:if>
+          <td>
+          <xsl:for-each select="$currentNode/child::*">
+		    <!--table class="table table-bordered table-sm align-middle"><tbody>
+		    </tbody></table-->
+            <xsl:apply-templates select=".">
+              <xsl:with-param name="context" select="$currentDataNode/child::*"/>
+              <xsl:with-param name="display" select="$display"/>
+            </xsl:apply-templates>
           </xsl:for-each>
+          </td>
+          <xsl:if test="(position() mod $cols = 0) or position() = last()">
+            <xsl:text disable-output-escaping="yes">&lt;/tr></xsl:text>
+          </xsl:if>
         </xsl:for-each>
+        </tbody></table>
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="lastColumnAsExpandedRow" as="xs:boolean">
@@ -462,7 +439,7 @@
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <xsl:variable name="numberOfColumns" select="count($currentNode/beast:Field)"/>
+        <!--xsl:variable name="numberOfColumns" select="count($currentNode/beast:Field)"/-->
         <thead>
           <tr>
             <xsl:if test="$lastColumnAsExpandedRow">
@@ -470,9 +447,12 @@
                 <xsl:value-of select="'expandable-row'"/>
               </xsl:attribute>
             </xsl:if>
-            <xsl:for-each select="$currentNode/beast:Field">
+            <!--xsl:for-each select="$currentNode/beast:Field"-->
+            <xsl:for-each select="$currentNode/child::*">
               <xsl:variable name="name">
-                <xsl:evaluate xpath="@name" context-item="$rowContext/child::*[1]"/>
+                <xsl:if test="not(empty(@name))">
+                  <xsl:evaluate xpath="@name" context-item="$rowContext/child::*[1]"/>
+                </xsl:if>
               </xsl:variable>
               <xsl:if test="not($lastColumnAsExpandedRow) or ($lastColumnAsExpandedRow and position() != $numberOfColumns)">
                 <th>
@@ -493,7 +473,8 @@
                 <xsl:text disable-output-escaping="yes">&lt;tr></xsl:text>
               </xsl:otherwise>
             </xsl:choose>
-            <xsl:for-each select="$currentNode/beast:Field">
+            <!--xsl:for-each select="$currentNode/beast:Field"-->
+            <xsl:for-each select="$currentNode/child::*">
               <xsl:if test="($lastColumnAsExpandedRow and position() = $numberOfColumns)">
                 <xsl:text disable-output-escaping="yes">&lt;/tr>&lt;tr class="expanded-row" style="display: table-row;"></xsl:text>
               </xsl:if>
@@ -513,6 +494,7 @@
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:apply-templates select="beast:NestedSection | beast:Fields | beast:Repeat | beast:Form | beast:Text">
+                    <!--xsl:apply-templates select="."-->
                       <xsl:with-param name="context" select="$currentDataNode/child::*"/>
                       <xsl:with-param name="display" select="$display"/>
                     </xsl:apply-templates>
@@ -570,7 +552,7 @@
           </xsl:apply-templates>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:apply-templates select="beast:Field | beast:Form | beast:Repeat | beast:Text">
+          <xsl:apply-templates select="beast:Fields | beast:Field | beast:Form | beast:Repeat | beast:Text">
             <xsl:with-param name="context" select="$childContext"/>
             <xsl:with-param name="display" select="$varDisplay"/>
           </xsl:apply-templates>
@@ -582,6 +564,71 @@
   <xsl:template match="beast:NewLine">
     <xsl:param name="context"/>
     <br/>
+  </xsl:template>
+
+  <xsl:template match="beast:Text">
+    <xsl:param name="context"/>
+    <xsl:param name="display"/>
+    <xsl:choose>
+      <xsl:when test="not(empty(@expr))">
+        <xsl:variable name="value">
+          <xsl:evaluate xpath="@expr" context-item="$context"/>
+        </xsl:variable>
+        <xsl:call-template name="formatFieldValue">
+          <xsl:with-param name="field" select="."/>
+          <xsl:with-param name="context" select="$context"/>
+          <xsl:with-param name="display" select="$display"/>
+        </xsl:call-template>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="formatFieldValue">
+    <xsl:param name="field"/>
+    <xsl:param name="context"/>
+    <xsl:param name="display"/>
+	<xsl:if test="not(empty($field/@expr))">
+      <xsl:variable name="value">
+        <xsl:evaluate xpath="$field/@expr" context-item="$context"/>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="not(empty($field/@class))">
+          <xsl:choose>
+            <xsl:when test="$value = false() and not(empty($field/@exprFalse))">
+              <xsl:variable name="valueFalse">
+                <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
+              </xsl:variable>
+			<span class="{$field/@class}"><xsl:value-of select="$valueFalse"/></span>
+            </xsl:when>
+            <xsl:when test="$value = true() and not(empty($field/@exprTrue))">
+              <xsl:variable name="valueTrue">
+                <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
+              </xsl:variable>
+              <span class="{$field/@class}"><xsl:value-of select="$valueTrue"/></span>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'false'">
+              <xsl:variable name="valueFalse">
+                <xsl:evaluate xpath="$field/@exprFalse" context-item="$context"/>
+              </xsl:variable>
+              <xsl:value-of select="$valueFalse"/>
+            </xsl:when>
+            <xsl:when test="(not(empty($field/@exprTrue)) or not(empty($field/@exprFalse))) and $value = 'true'">
+              <xsl:variable name="valueTrue">
+                <xsl:evaluate xpath="$field/@exprTrue" context-item="$context"/>
+              </xsl:variable>
+              <xsl:value-of select="$valueTrue"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$value"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+	</xsl:if>
   </xsl:template>
 
   <xsl:template name="formatAddress">
