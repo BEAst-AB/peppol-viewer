@@ -4,7 +4,7 @@ set CLASSPATH=%SAXON_HOME%\lib\jline-2.14.6.jar;%SAXON_HOME%\lib\xmlresolver-5.2
 set XSL_FILE=".\perplexity.xsl"
 set XML_META_FILE=".\..\metadata\ada-perplexity.xml"
 REM set CURRENT_DIR=%~dp0
-set XML_FILE_NAME=AdvancedDespatchAdvice_Example_Full
+set XML_FILE_NAME=AdvancedDespatchAdvice__Example_UseCase_08_Waste
 set IN_XML_FILE=./%XML_FILE_NAME%.xml
 set OUT_XML_FILE=%XML_FILE_NAME%_output.html
 

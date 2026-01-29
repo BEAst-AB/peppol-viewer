@@ -227,6 +227,19 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
+	<xsl:variable name="exprNode">
+      <xsl:choose>
+        <xsl:when test="not(empty(@expr))">
+		  <xsl:evaluate xpath="@expr" context-item="$childContext"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:variable>
+	<xsl:if test="$childContext != '' and $exprNode != ''">
+	<!--xsl:message>
+	  Nested section child context: <xsl:value-of select="$childContext"/>
+	  Nested section expr: <xsl:value-of select="@expr"/>
+	  Nested section context: <xsl:copy-of select="$exprNode"/>
+	</xsl:message-->
     <div class="nested-section">
       <div class="nested-title">
         <span>
@@ -240,6 +253,7 @@
         <xsl:with-param name="display" select="$overrideDisplay"/>
       </xsl:apply-templates>
     </div>
+	</xsl:if>
   </xsl:template>
 
   <xsl:template match="beast:Fields">
@@ -595,6 +609,9 @@
     <xsl:param name="context"/>
     <xsl:param name="display"/>
 	<xsl:if test="not(empty($field/@expr))">
+	<!--xsl:message>
+	  Field expr: <xsl:value-of select="$field/@expr" />
+	</xsl:message-->
       <xsl:variable name="value">
         <xsl:evaluate xpath="$field/@expr" context-item="$context"/>
       </xsl:variable>
