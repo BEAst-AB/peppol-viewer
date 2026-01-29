@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Advanced Despatch Advice</WindowTitle>
+  <PageTitle>Advanced Despatch Advice Example UseCase 06 Concrete material</PageTitle>
+  <DocumentTitle>/ubl:DespatchAdvice/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary-ada.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Shipment">
+		<Field>
+		  <Name>GSIN</Name>
+		  <Expr>/ubl:DespatchAdvice/cac:Shipment/cbc:ID[@schemeID="GSIN"]/text()</Expr>
+		</Field>
+		<Field>
+		  <Name>GINC</Name>
+		  <Expr>/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cbc:ID[@schemeID="GINC"]/text()</Expr>
+		</Field>
+	  </Form>
+      <Key>
+		<Field>
+		  <Name translate="true">Issue Date Time</Name>
+ 	      <DisplayBlock format="singleLine">
+		    <Expr>/ubl:DespatchAdvice/cbc:IssueDate/text()</Expr>
+		    <Expr>/ubl:DespatchAdvice/cbc:IssueTime/text()</Expr>
+		  </DisplayBlock>
+		</Field>
+		<Field>
+		  <Name translate="true">Actual Delivery Date Time</Name>
+ 	      <DisplayBlock format="singleLine">
+		    <Expr>/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cbc:ActualDeliveryDate/text()</Expr>
+		    <Expr>/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cbc:ActualDeliveryTime/text()</Expr>
+		  </DisplayBlock>
+		</Field>
+		<Field>
+		  <Name translate="true">Estimated Delivery Date Time</Name>
+ 	      <DisplayBlock format="singleLine">
+		    <Expr>/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cac:EstimatedDeliveryPeriod/cbc:StartDate/text()</Expr>
+		    <Expr>/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cac:EstimatedDeliveryPeriod/cbc:StartTime/text()</Expr>
+		  </DisplayBlock>
+		</Field>
+	  </Key>
+    </Fields>
+    <Note>
+	  <Expr>/ubl:DespatchAdvice/cbc:Note/text()</Expr>
+	</Note>
+    <Reference>
+      <Data>
+		<Field forEach="/ubl:DespatchAdvice/cac:AdditionalDocumentReference">
+		  <Name>cbc:DocumentType/text()</Name>
+		  <Expr>cbc:ID/text()</Expr>
+		</Field>
+	  </Data>
+      <Documents></Documents>
+    </Reference>
+    <Party>
+      <Stakeholders>
+        <Primary block="/ubl:DespatchAdvice/cac:DespatchSupplierParty/cac:Party" title="Supplier / Seller">
+		  <DisplayBlock wrap="cellRow">
+  		    <Expr format="bold">cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+		    <Expr>cac:Party/cac:PartyIdentification/cbc:ID[@schemeID="0007"]/text()</Expr>
+		    <Expr>cac:Party/cac:PostalAddress/cbc:StreetName/text()</Expr>
+		    <DisplayBlock format="singleLine">
+		      <Expr>cac:Party/cac:PostalAddress/cbc:CityName/text()</Expr>
+		      <Expr>cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+		      <Expr>cac:Party/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+		    </DisplayBlock>
+		  </DisplayBlock>
+		  <NewLine/>
+		  <DisplayBlock wrap="cellRow">
+		    <Expr>cac:Party/cac:Contact/cbc:Name/text()</Expr>
+		    <Expr>cac:Party/cac:Contact/cbc:Telephone/text()</Expr>
+		    <Expr>cac:Party/cac:Contact/cbc:ElectronicMail/text()</Expr>
+		  </DisplayBlock>
+		</Primary>
+        <Primary block="/ubl:DespatchAdvice/cac:DeliveryCustomerParty/cac:Party" title="Customer / Buyer">
+		  <DisplayBlock wrap="cellRow">
+  		    <Expr format="bold">cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+		    <Expr>cac:Party/cac:PartyIdentification/cbc:ID[@schemeID="0007"]/text()</Expr>
+		    <Expr>cac:Party/cac:PostalAddress/cbc:StreetName/text()</Expr>
+		    <DisplayBlock format="singleLine">
+		      <Expr>cac:Party/cac:PostalAddress/cbc:CityName/text()</Expr>
+		      <Expr>cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+		      <Expr>cac:Party/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+		    </DisplayBlock>
+		  </DisplayBlock>
+		  <NewLine/>
+		  <DisplayBlock wrap="cellRow">
+		    <Expr>cac:Party/cac:Contact/cbc:Name/text()</Expr>
+		    <Expr>cac:Party/cac:Contact/cbc:Telephone/text()</Expr>
+		    <Expr>cac:Party/cac:Contact/cbc:ElectronicMail/text()</Expr>
+		  </DisplayBlock>
+		</Primary>
+        <Secondary block="/ubl:DespatchAdvice/cac:Shipment/cac:Consignment/cac:CarrierParty" title="Carrier">
+		  <DisplayBlock wrap="cellRow">
+  		    <Expr format="bold">cac:CarrierParty/cac:PartyName/cbc:Name/text()</Expr>
+  		    <Expr>cac:CarrierParty/cac:PartyIdentification/cbc:ID[@schemeID="0088"]/text()</Expr>
+		  <NewLine/>
+		  <DisplayBlock>
+  		    <Expr>cac:CarrierParty/cac:Person/cac:IdentityDocumentReference/cbc:DocumentType/text()</Expr>
+  		    <Expr>cac:CarrierParty/cac:Person/cac:IdentityDocumentReference/cbc:ID/text()</Expr>
+		  </DisplayBlock>
+		  </DisplayBlock>
+		</Secondary>
+        <Secondary block="/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cac:DeliveryLocation" title="Delivery">
+		  <DisplayBlock wrap="cellRow">
+  		    <Expr format="bold">cac:DeliveryLocation/cbc:Name/text()</Expr>
+  		    <Expr>cac:DeliveryLocation/cbc:ID[@schemeID="0007"]/text()</Expr>
+		    <DisplayBlock format="singleLine">
+		      <Expr>cac:DeliveryLocation/cac:Address/cbc:StreetName/text()</Expr>
+		      <Expr>cac:DeliveryLocation/cac:Address/cbc:AdditionalStreetName/text()</Expr>
+		    </DisplayBlock>
+		    <DisplayBlock format="singleLine">
+		      <Expr>cac:DeliveryLocation/cac:Address/cbc:CityName/text()</Expr>
+		      <Expr>cac:DeliveryLocation/cac:Address/cac:Country/cbc:IdentificationCode/text()</Expr>
+		      <Expr>cac:DeliveryLocation/cac:Address/cbc:PostalZone/text()</Expr>
+		    </DisplayBlock>
+		  </DisplayBlock>
+		</Secondary>
+        <Secondary block="/ubl:DespatchAdvice/cac:Shipment/cac:Delivery/cac:Despatch/cac:DespatchAddress" title="Despatch Location">
+		  <DisplayBlock wrap="cellRow">
+  		    <Expr format="bold">cac:DespatchAddress/cbc:ID/text()</Expr>
+  	        <Expr>cac:DespatchAddress/cac:Address/cbc:StreetName/text()</Expr>
+		    <DisplayBlock format="singleLine">
+		      <Expr>cac:DespatchAddress/cbc:CityName/text()</Expr>
+		      <Expr>cac:DespatchAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+		      <Expr>cac:DespatchAddress/cbc:PostalZone/text()</Expr>
+		    </DisplayBlock>
+		  <NewLine/>
+		    <DisplayBlock format="singleLine">
+		      <Expr>cac:DespatchAddress/cac:LocationCoordinate/cbc:CoordinateSystemCode/text()</Expr>
+		      <Expr>cac:DespatchAddress/cac:LocationCoordinate/cbc:LatitudeDegreesMeasure/text()</Expr>
+		      <Expr>cac:DespatchAddress/cac:LocationCoordinate/cbc:LongitudeDegreesMeasure/text()</Expr>
+		    </DisplayBlock>
+		  </DisplayBlock>
+		</Secondary>
+      </Stakeholders>
+    </Party>
+	<Section>
+      <Fields>
+        <Table foreach="/ubl:DespatchAdvice/cac:DespatchLine" title="Lines" hasRowDetail="true">
+		  <Field>
+		    <Name translate="true">ID</Name>
+  		    <Expr>cbc:ID/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Item</Name>
+  		    <Expr>cac:Item/cbc:Name/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Quantity</Name>
+		    <DisplayBlock format="singleLine">
+  		      <Expr>cbc:DeliveredQuantity/text()</Expr>
+  		      <Expr as="text">cbc:DeliveredQuantity/@unitCode</Expr>
+		    </DisplayBlock>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Reference Order</Name>
+  		    <Expr>cac:OrderLineReference/cac:OrderReference/cbc:ID/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Reference Order Line</Name>
+  		    <Expr>cac:OrderLineReference/cbc:LineID/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Standard</Name>
+  		    <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Seller</Name>
+  		    <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Name translate="true">Manufacturer</Name>
+  		    <Expr>cac:Item/cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
+		  </Field>
+		  <Field>
+		    <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+			  <Field>
+				<Name translate="true"><Expr>cbc:Name/text()</Expr></Name>
+				<Expr>cbc:Value/text()</Expr>
+			  </Field>
+			</Table>
+		  </Field>
+		</Table>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>
