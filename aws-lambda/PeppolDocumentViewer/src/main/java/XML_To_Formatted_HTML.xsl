@@ -114,13 +114,25 @@
 <body>
 <div style="background-color:orange" class="w3-container w3-card">
 <h2 style="color:white">
-<xsl:variable name="varFileName">
-<xsl:call-template name="fileNameFromPath">
+  <xsl:variable name="varFileName">
+    <xsl:call-template name="fileNameFromPath">
   <!--xsl:with-param name="path" select="base-uri($varDataXml)" /-->
-  <xsl:with-param name="path" select="base-uri()" />
-</xsl:call-template>
-</xsl:variable>
-<xsl:call-template name="translate"><xsl:with-param name="keyName" select="$varFileName"/></xsl:call-template>
+      <xsl:with-param name="path" select="string(base-uri())"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="varHeading">
+    <xsl:call-template name="translate">
+      <xsl:with-param name="keyName" select="string($varFileName)"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="normalize-space(string($varHeading)) != ''">
+      <xsl:value-of select="$varHeading"/>
+    </xsl:when>
+    <xsl:otherwise>
+	  <xsl:value-of select="/doc:BusinessDocument/doc:PageTitle"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </h2>
 </div>
 <h3>
