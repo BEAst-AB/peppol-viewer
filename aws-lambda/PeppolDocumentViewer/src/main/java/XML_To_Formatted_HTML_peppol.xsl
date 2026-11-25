@@ -281,14 +281,14 @@
           <header class="doc-header">
             <div>
               <div class="doc-header-badge">
-                <xsl:variable name="varFileName">
+                <!--xsl:variable name="varFileName">
                   <xsl:call-template name="fileNameFromPath">
                     <xsl:with-param name="path" select="base-uri()" />
                   </xsl:call-template>
                 </xsl:variable>
                 <xsl:call-template name="translate">
                   <xsl:with-param name="keyName" select="$varFileName"/>
-                </xsl:call-template>
+                </xsl:call-template-->
               </div>
               <h1>
                 <xsl:call-template name="translate">
@@ -311,9 +311,9 @@
           </main>
 
           <footer class="doc-footer">
-            <xsl:for-each select="/doc:BusinessDocument/doc:Namespaces/doc:Namespace">
+            <!--xsl:for-each select="/doc:BusinessDocument/doc:Namespaces/doc:Namespace">
               <p><xsl:value-of select="@prefix"/>: <xsl:value-of select="text()"/></p>
-            </xsl:for-each>
+            </xsl:for-each-->
           </footer>
         </div>
 
