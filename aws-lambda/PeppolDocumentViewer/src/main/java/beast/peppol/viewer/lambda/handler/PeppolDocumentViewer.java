@@ -267,7 +267,7 @@ public class PeppolDocumentViewer implements RequestHandler<APIGatewayV2HTTPEven
               logger.log("language: " + language);
               logger.log("properties.getString(\"url.repo.peppol-viewer\"): " + properties.getString("url.repo.peppol-viewer"));
               paramMap.put("paramDataXml", requestAsTempFile.getAbsolutePath());
-			  responseData = handleTransformRequest("XML_To_Formatted_HTML.xsl", new URL(viewerMetadataFile).openStream(), paramMap);
+			  responseData = handleTransformRequest("XML_To_Formatted_HTML_peppol.xsl", new URL(viewerMetadataFile).openStream(), paramMap);
 			}
         }
       } catch(Exception ex) {

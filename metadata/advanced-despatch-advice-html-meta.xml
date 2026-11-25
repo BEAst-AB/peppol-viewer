@@ -6,7 +6,7 @@
     <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
   </Namespaces>
   <WindowTitle>Advanced Despatch Advice</WindowTitle>
-  <PageTitle>Advanced Despatch Advice Example UseCase 06 Concrete material</PageTitle>
+  <PageTitle>Advanced Despatch Advice</PageTitle>
   <DocumentTitle>/ubl:DespatchAdvice/cbc:ID/text()</DocumentTitle>
   <TranslationXmlFile>dictionary-ada.xml</TranslationXmlFile>
   <Section>
