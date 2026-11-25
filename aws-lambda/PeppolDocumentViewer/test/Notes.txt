@@ -1,0 +1,4 @@
+https://github.com/OpenPEPPOL/logistics-bis/blob/main/rules/examples/AdvancedDespatchAdvice_Example_Full.xml
+
+
+file:///C:/Users/KishoreSadanandam/source/repos/BEAst-AB/peppol-viewer/aws-lambda/PeppolDocumentViewer/test/ADA_html_layout_bootstrap.htm

@@ -114,13 +114,25 @@
 <body>
 <div style="background-color:orange" class="w3-container w3-card">
 <h2 style="color:white">
-<xsl:variable name="varFileName">
-<xsl:call-template name="fileNameFromPath">
+  <xsl:variable name="varFileName">
+    <xsl:call-template name="fileNameFromPath">
   <!--xsl:with-param name="path" select="base-uri($varDataXml)" /-->
-  <xsl:with-param name="path" select="base-uri()" />
-</xsl:call-template>
-</xsl:variable>
-<xsl:call-template name="translate"><xsl:with-param name="keyName" select="$varFileName"/></xsl:call-template>
+      <xsl:with-param name="path" select="string(base-uri())"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="varHeading">
+    <xsl:call-template name="translate">
+      <xsl:with-param name="keyName" select="string($varFileName)"/>
+    </xsl:call-template>
+  </xsl:variable>
+  <xsl:choose>
+    <xsl:when test="normalize-space(string($varHeading)) != ''">
+      <xsl:value-of select="$varHeading"/>
+    </xsl:when>
+    <xsl:otherwise>
+	  <xsl:value-of select="/doc:BusinessDocument/doc:PageTitle"/>
+    </xsl:otherwise>
+  </xsl:choose>
 </h2>
 </div>
 <h3>
@@ -132,46 +144,78 @@
 	</xsl:apply-templates>
 
 <script>
-const toggleRowExpand = (element) => {  
-  element.classList.toggle("active");
-  var lineDetailPanel = element.nextElementSibling;
-  if (lineDetailPanel.style.maxHeight) {
-	lineDetailPanel.style.maxHeight = null;
+<![CDATA[
+function getRowPanel(button) {
+  return button
+    .closest(".expanded-row-content")
+    ?.querySelector(".line-detail-panel");
+}
+
+function getRowButtons() {
+  return Array.from(
+    document.querySelectorAll("button.accordion")
+  ).filter(button => getRowPanel(button));
+}
+
+function setRowExpanded(button, expanded) {
+  const panel = getRowPanel(button);
+  if (!panel) return;
+
+  button.setAttribute("aria-expanded", String(expanded));
+  button.classList.toggle("active", expanded);
+
+  const indicator = button.querySelector(".expand-table-row");
+  indicator?.classList.toggle("selected", expanded);
+
+  // Allow the full detail content to appear without a fixed limit.
+  panel.style.maxHeight = expanded ? "none" : "0px";
+}
+
+function updateExpandAllLabel() {
+  const control = document.getElementById("expand_all");
+  if (!control) return;
+
+  const buttons = getRowButtons();
+
+  const allExpanded =
+    buttons.length > 0 &&
+    buttons.every(button =>
+      button.getAttribute("aria-expanded") === "true"
+    );
+
+  const label = allExpanded ? "Collapse All" : "Expand All";
+
+  if (control.tagName === "INPUT") {
+    control.value = label;
   } else {
-	lineDetailPanel.style.maxHeight = lineDetailPanel.scrollHeight + "px";
-  } 
-}
-
-const toggleRowExpandSelected = (element) => {  
-  element.classList.toggle("selected").closest('tr').next().toggle();
-}
-
-const allRowExpandToggle = (element) => {  
-  var lineTable = element.closest('ul').nextElementSibling;
-  for (var i = 0, row; i &lt; lineTable.rows.length; i++) {
-    row = lineTable.rows[i];
-	for (var j = 0, col; j &lt; row.cells.length; j++) {
-	  col = row.cells[j];
-	  if (col.classList.contains("expanded-row-content")) {
-	    var lineDetailButton = col.children[0];
-		if (lineDetailButton != null &amp;&amp; lineDetailButton.classList.contains("accordion")) {
-		  var lineDetailSpan = lineDetailButton.children[0];
-		  if (lineDetailSpan != null &amp;&amp; lineDetailSpan.classList.contains("expand-table-row")) {
-		    lineDetailSpan.classList.toggle("selected"); // .closest('tr').next().toggle();
-		  }
-		}
-	    var lineDetailPanel = col.children[1];
-		if (lineDetailPanel != null &amp;&amp; lineDetailPanel.classList.contains("line-detail-panel")) {
-          if (lineDetailPanel.style.maxHeight) {
-            lineDetailPanel.style.maxHeight = null;
-          } else {
-	        lineDetailPanel.style.maxHeight = lineDetailPanel.scrollHeight + "px";
-          } 
-		}
-	  }
-	}
+    control.textContent = label;
   }
 }
+
+function toggleRowExpand(button) {
+  const expanded =
+    button.getAttribute("aria-expanded") === "true";
+
+  setRowExpanded(button, !expanded);
+  updateExpandAllLabel();
+}
+
+function allRowExpandToggle() {
+  const buttons = getRowButtons();
+
+  const allExpanded =
+    buttons.length > 0 &&
+    buttons.every(button =>
+      button.getAttribute("aria-expanded") === "true"
+    );
+
+  buttons.forEach(button => {
+    setRowExpanded(button, !allExpanded);
+  });
+
+  updateExpandAllLabel();
+}
+]]>
 </script>
 
 </body>
@@ -338,7 +382,7 @@ const allRowExpandToggle = (element) => {
  			    <xsl:attribute name="class">
 			      <xsl:value-of select="'expanded-row-content'"/>
 			    </xsl:attribute>
-<button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row" onclick="toggleRowExpandSelected(this)"/></button>
+<button class="accordion" onclick="toggleRowExpand(this)"><span class="expand-table-row"/></button>
 <div class="line-detail-panel">
 	            <xsl:for-each select="doc:Expr[text()!='']">
 	              <xsl:evaluate xpath="." context-item="$varContext"/>
