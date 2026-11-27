@@ -38,12 +38,20 @@
           <Name>Issue date</Name>
           <Expr>/*:Catalogue/cbc:IssueDate/text()</Expr>
         </Field>
-        <Field>
+        <!--Field>
           <Name>Validity period</Name>
           <DisplayBlock format="singleLine">
             <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:StartDate/text()</Expr>
             <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:EndDate/text()</Expr>
           </DisplayBlock>
+        </Field-->
+        <Field>
+          <Name>Validity period start date</Name>
+          <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:StartDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Validity period end date</Name>
+          <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:EndDate/text()</Expr>
         </Field>
       </Key>
     </Fields>
@@ -124,13 +132,6 @@
             <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
           </Field>
           <Field>
-            <Name>Price</Name>
-            <DisplayBlock format="singleLine">
-              <Expr>cac:RequiredItemLocationQuantity/cac:Price/cbc:PriceAmount/text()</Expr>
-              <Expr as="text">cac:RequiredItemLocationQuantity/cac:Price/cbc:PriceAmount/@currencyID</Expr>
-            </DisplayBlock>
-          </Field>
-          <Field>
             <Name>Details</Name>
             <DisplayBlock>
               <Expr>cbc:ActionCode/text()</Expr>
@@ -143,7 +144,6 @@
               <Expr>cbc:WarrantyInformation/text()</Expr>
               <Expr>cac:LineValidityPeriod/cbc:StartDate/text()</Expr>
               <Expr>cac:LineValidityPeriod/cbc:EndDate/text()</Expr>
-              <Expr>cac:RequiredItemLocationQuantity/cbc:LeadTimeMeasure/text()</Expr>
               <Expr>cac:Item/cbc:Description/text()</Expr>
               <Expr>cac:Item/cbc:BrandName/text()</Expr>
               <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
@@ -155,6 +155,36 @@
               <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:Percent/text()</Expr>
               <Expr>cac:Item/cac:ClassifiedTaxCategory/cac:TaxScheme/cbc:ID/text()</Expr>
             </DisplayBlock>
+            <Table foreach="cac:RequiredItemLocationQuantity" title="Price and quantity tiers">
+              <Field>
+                <Name>Price</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cac:Price/cbc:PriceAmount/text()</Expr>
+                  <Expr as="text">string(cac:Price/cbc:PriceAmount/@currencyID)</Expr>
+                </DisplayBlock>
+              </Field>
+              <Field>
+                <Name>Minimum quantity</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cbc:MinimumQuantity/text()</Expr>
+                  <Expr as="text">string(cbc:MinimumQuantity/@unitCode)</Expr>
+                </DisplayBlock>
+              </Field>
+              <Field>
+                <Name>Maximum quantity</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cbc:MaximumQuantity/text()</Expr>
+                  <Expr as="text">string(cbc:MaximumQuantity/@unitCode)</Expr>
+                </DisplayBlock>
+              </Field>
+              <Field>
+                <Name>Lead time</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cbc:LeadTimeMeasure/text()</Expr>
+                  <Expr as="text">string(cbc:LeadTimeMeasure/@unitCode)</Expr>
+                </DisplayBlock>
+              </Field>
+            </Table>
             <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
               <Field>
                 <Name><Expr>cbc:Name/text()</Expr></Name>
