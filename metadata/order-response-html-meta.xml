@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:OrderResponse-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Order Response</WindowTitle>
+  <PageTitle>Order Response</PageTitle>
+  <DocumentTitle>/*:OrderResponse/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Order response">
+        <Field>
+          <Name>Sales order</Name>
+          <Expr>/*:OrderResponse/cbc:SalesOrderID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Response code</Name>
+          <Expr>/*:OrderResponse/cbc:OrderResponseCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Currency</Name>
+          <Expr>/*:OrderResponse/cbc:DocumentCurrencyCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Customer reference</Name>
+          <Expr>/*:OrderResponse/cbc:CustomerReference/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Order reference</Name>
+          <Expr>/*:OrderResponse/cac:OrderReference/cbc:ID/text()</Expr>
+        </Field>
+      </Form>
+      <Key>
+        <Field>
+          <Name>Issue date</Name>
+          <Expr>/*:OrderResponse/cbc:IssueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Issue time</Name>
+          <Expr>/*:OrderResponse/cbc:IssueTime/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Promised delivery period</Name>
+          <DisplayBlock>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartDate/text()</Expr>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartTime/text()</Expr>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndDate/text()</Expr>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndTime/text()</Expr>
+          </DisplayBlock>
+        </Field>
+      </Key>
+    </Fields>
+    <Note>
+      <Expr>/*:OrderResponse/cbc:Note/text()</Expr>
+    </Note>
+    <Reference>
+      <Data>
+        <Field forEach="/*:OrderResponse/cac:AdditionalDocumentReference">
+          <Name>cbc:DocumentType/text()</Name>
+          <Expr>cbc:ID/text()</Expr>
+        </Field>
+      </Data>
+    </Reference>
+    <Party>
+      <Stakeholders>
+        <Primary block="/*:OrderResponse/cac:SellerSupplierParty/cac:Party" title="Seller / Supplier">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <Expr>cac:Party/cbc:EndpointID/text()</Expr>
+            <Expr>cac:Party/cac:PartyIdentification/cbc:ID/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+        <Primary block="/*:OrderResponse/cac:BuyerCustomerParty/cac:Party" title="Buyer / Customer">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <Expr>cac:Party/cbc:EndpointID/text()</Expr>
+            <Expr>cac:Party/cac:PartyIdentification/cbc:ID/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+      </Stakeholders>
+    </Party>
+    <Section>
+      <Fields>
+        <Table foreach="/*:OrderResponse/cac:OrderLine" title="Order response lines" hasRowDetail="true">
+          <Field>
+            <Name>Order line reference</Name>
+            <Expr>cac:OrderLineReference/cbc:LineID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Response line ID</Name>
+            <Expr>cac:LineItem/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Status</Name>
+            <Expr>cac:LineItem/cbc:LineStatusCode/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Item</Name>
+            <Expr>cac:LineItem/cac:Item/cbc:Name/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Quantity</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:LineItem/cbc:Quantity/text()</Expr>
+              <Expr as="text">cac:LineItem/cbc:Quantity/@unitCode</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Price</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:LineItem/cac:Price/cbc:PriceAmount/text()</Expr>
+              <Expr as="text">cac:LineItem/cac:Price/cbc:PriceAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Details</Name>
+            <DisplayBlock>
+              <Expr>cac:LineItem/cbc:Note/text()</Expr>
+              <Expr>cac:LineItem/cbc:MaximumBackorderQuantity/text()</Expr>
+              <Expr>cac:LineItem/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartDate/text()</Expr>
+              <Expr>cac:LineItem/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartTime/text()</Expr>
+              <Expr>cac:LineItem/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndDate/text()</Expr>
+              <Expr>cac:LineItem/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndTime/text()</Expr>
+              <Expr>cac:LineItem/cac:Price/cbc:BaseQuantity/text()</Expr>
+              <Expr>cac:LineItem/cac:Item/cbc:Description/text()</Expr>
+              <Expr>cac:LineItem/cac:Item/cac:BuyersItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:LineItem/cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:LineItem/cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
+            </DisplayBlock>
+            <Table foreach="cac:LineItem/cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+              <Field>
+                <Name><Expr>cbc:Name/text()</Expr></Name>
+                <Expr>cbc:Value/text()</Expr>
+              </Field>
+            </Table>
+            <Table foreach="cac:SellerSubstitutedLineItem">
+              <Field>
+                <Name>Substitute item ID</Name>
+                <Expr>cbc:ID/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Substitute item</Name>
+                <Expr>cac:Item/cbc:Name/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Seller item ID</Name>
+                <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Standard item ID</Name>
+                <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Classification</Name>
+                <Expr>cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Tax category</Name>
+                <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:ID/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Tax percent</Name>
+                <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:Percent/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Additional properties</Name>
+                <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+                  <Field>
+                    <Name><Expr>cbc:Name/text()</Expr></Name>
+                    <Expr>cbc:Value/text()</Expr>
+                  </Field>
+                </Table>
+              </Field>
+            </Table>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>
