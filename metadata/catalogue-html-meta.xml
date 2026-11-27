@@ -145,7 +145,7 @@
           </Field>
           <Field>
             <Name>Details</Name>
-            <Form title="Catalogue line details">
+            <Form title="Catalogue line details" columns="2">
               <Field>
                 <Name>Action code</Name>
                 <Expr>cbc:ActionCode/text()</Expr>
@@ -178,29 +178,31 @@
                 <Name>Validity end date</Name>
                 <Expr>cac:LineValidityPeriod/cbc:EndDate/text()</Expr>
               </Field>
+            </Form>
+            <Form title="Item details" columns="1">
               <Field>
-                <Name>Item description</Name>
+                <Name>Description</Name>
                 <Expr>cac:Item/cbc:Description/text()</Expr>
               </Field>
+              <Table foreach="cac:Item">
+                <Field>
+                  <Name>Brand name</Name>
+                  <Expr>cbc:BrandName/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Manufacturer item ID</Name>
+                  <Expr>cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Manufacturer</Name>
+                  <Expr>cac:ManufacturerParty/cac:PartyName/cbc:Name/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Country of origin</Name>
+                  <Expr>cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
+                </Field>
+              </Table>
             </Form>
-            <Table foreach="cac:Item" title="Item details">
-              <Field>
-                <Name>Brand name</Name>
-                <Expr>cbc:BrandName/text()</Expr>
-              </Field>
-              <Field>
-                <Name>Manufacturer item ID</Name>
-                <Expr>cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
-              </Field>
-              <Field>
-                <Name>Manufacturer</Name>
-                <Expr>cac:ManufacturerParty/cac:PartyName/cbc:Name/text()</Expr>
-              </Field>
-              <Field>
-                <Name>Country of origin</Name>
-                <Expr>cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
-              </Field>
-            </Table>
             <Table foreach="cac:Item/cac:ClassifiedTaxCategory" title="Classified tax categories">
               <Field>
                 <Name>Tax category</Name>

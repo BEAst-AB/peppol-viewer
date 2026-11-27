@@ -125,6 +125,14 @@
             font-weight: 600;
             color: var(--text-primary);
           }
+          .kv-list-columns-2 {
+            grid-template-columns: minmax(130px, auto) minmax(0, 1fr) minmax(130px, auto) minmax(0, 1fr);
+          }
+          @media (max-width: 700px) {
+            .kv-list-columns-2 {
+              grid-template-columns: minmax(130px, auto) minmax(0, 1fr);
+            }
+          }
           .note-box {
             background-color: var(--accent-light);
             border-left: 4px solid var(--accent);
@@ -356,7 +364,7 @@
                <div class="section-block">
                   <div class="table-wrapper">
                      <h3 class="section-title">Catalogue lines</h3>
-                     <div class="table-toolbar"><button type="button" class="btn-expand-all" onclick="allRowExpandToggle(this)">Expandera eller kollapsa alla</button></div>
+                     <div class="table-toolbar"><button type="button" class="btn-expand-all" onclick="allRowExpandToggle(this)">Visa detaljer</button></div>
                      <table class="data-table">
                         <thead>
                            <tr class="expandable-row">
@@ -382,7 +390,7 @@
                                     <div class="line-detail-panel-inner">
                                        <div class="info-card">
                                           <h3 class="info-card-title">Catalogue line details</h3>
-                                          <dl class="kv-list">
+                                          <dl class="kv-list kv-list-columns-2">
                                              <dt>Action code</dt>
                                              <dd>Update</dd>
                                              <dt>Orderable</dt>
@@ -399,30 +407,34 @@
                                              <dd>2018-05-31</dd>
                                              <dt>Validity end date</dt>
                                              <dd>2019-05-31</dd>
-                                             <dt>Item description</dt>
-                                             <dd>Office chair by John Doe.</dd>
                                           </dl>
                                        </div>
-                                       <div class="table-wrapper">
-                                          <h3 class="section-title">Item details</h3>
-                                          <table class="data-table">
-                                             <thead>
-                                                <tr>
-                                                   <th>Brand name</th>
-                                                   <th>Manufacturer item ID</th>
-                                                   <th>Manufacturer</th>
-                                                   <th>Country of origin</th>
-                                                </tr>
-                                             </thead>
-                                             <tbody>
-                                                <tr>
-                                                   <td>Johnson's</td>
-                                                   <td>Prod-01</td>
-                                                   <td>Manufacturer</td>
-                                                   <td>DK</td>
-                                                </tr>
-                                             </tbody>
-                                          </table>
+                                       <div class="info-card">
+                                          <h3 class="info-card-title">Item details</h3>
+                                          <dl class="kv-list">
+                                             <dt>Description</dt>
+                                             <dd>Office chair by John Doe.</dd>
+                                          </dl>
+                                          <div class="table-wrapper">
+                                             <table class="data-table">
+                                                <thead>
+                                                   <tr>
+                                                      <th>Brand name</th>
+                                                      <th>Manufacturer item ID</th>
+                                                      <th>Manufacturer</th>
+                                                      <th>Country of origin</th>
+                                                   </tr>
+                                                </thead>
+                                                <tbody>
+                                                   <tr>
+                                                      <td>Johnson's</td>
+                                                      <td>Prod-01</td>
+                                                      <td>Manufacturer</td>
+                                                      <td>DK</td>
+                                                   </tr>
+                                                </tbody>
+                                             </table>
+                                          </div>
                                        </div>
                                        <div class="table-wrapper">
                                           <h3 class="section-title">Classified tax categories</h3>

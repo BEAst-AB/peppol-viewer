@@ -152,6 +152,14 @@
             font-weight: 600;
             color: var(--text-primary);
           }
+          .kv-list-columns-2 {
+            grid-template-columns: minmax(130px, auto) minmax(0, 1fr) minmax(130px, auto) minmax(0, 1fr);
+          }
+          @media (max-width: 700px) {
+            .kv-list-columns-2 {
+              grid-template-columns: minmax(130px, auto) minmax(0, 1fr);
+            }
+          }
           .note-box {
             background-color: var(--accent-light);
             border-left: 4px solid var(--accent);
@@ -385,11 +393,20 @@
           <xsl:with-param name="keyName" select="@title"/>
         </xsl:call-template>
       </h3>
-      <dl class="kv-list">
+      <dl>
+        <xsl:attribute name="class">
+          <xsl:text>kv-list</xsl:text>
+          <xsl:if test="@columns = '2'">
+            <xsl:text> kv-list-columns-2</xsl:text>
+          </xsl:if>
+        </xsl:attribute>
         <xsl:apply-templates select="doc:Field">
           <xsl:with-param name="context" select="$context"/>
         </xsl:apply-templates>
       </dl>
+      <xsl:apply-templates select="doc:Table">
+        <xsl:with-param name="context" select="$context"/>
+      </xsl:apply-templates>
     </div>
   </xsl:template>
 
