@@ -42,11 +42,25 @@
           <Name>Issue time</Name>
           <Expr>/*:OrderResponse/cbc:IssueTime/text()</Expr>
         </Field>
-        <Field>
+        <!--Field>
           <Name>Promised delivery period</Name>
           <DisplayBlock>
             <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartDate/text()</Expr>
             <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartTime/text()</Expr>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndDate/text()</Expr>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndTime/text()</Expr>
+          </DisplayBlock>
+        </Field-->
+        <Field>
+          <Name>Promised delivery period start</Name>
+          <DisplayBlock>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartDate/text()</Expr>
+            <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:StartTime/text()</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Promised delivery period end</Name>
+          <DisplayBlock>
             <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndDate/text()</Expr>
             <Expr>/*:OrderResponse/cac:Delivery/cac:PromisedDeliveryPeriod/cbc:EndTime/text()</Expr>
           </DisplayBlock>
