@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Peppol>
   <Viewers CustomizationID="urn:fdc:peppol.eu:logistics:trns:advanced_despatch_advice:1">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/advanced-despatch-advice-html-meta.xml</Viewers>
+  <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:catalogue:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/catalogue-html-meta.xml</Viewers>
 </Peppol>

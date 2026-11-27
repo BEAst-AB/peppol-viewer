@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:Catalogue-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Catalogue</WindowTitle>
+  <PageTitle>Catalogue</PageTitle>
+  <DocumentTitle>/*:Catalogue/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Catalogue">
+        <Field>
+          <Name>Catalogue name</Name>
+          <Expr>/*:Catalogue/cbc:Name/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Action</Name>
+          <Expr>/*:Catalogue/cbc:ActionCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Version</Name>
+          <Expr>/*:Catalogue/cbc:VersionID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Contract</Name>
+          <Expr>/*:Catalogue/cac:ReferencedContract/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Source catalogue</Name>
+          <Expr>/*:Catalogue/cac:SourceCatalogueReference/cbc:ID/text()</Expr>
+        </Field>
+      </Form>
+      <Key>
+        <Field>
+          <Name>Issue date</Name>
+          <Expr>/*:Catalogue/cbc:IssueDate/text()</Expr>
+        </Field>
+        <!--Field>
+          <Name>Validity period</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:StartDate/text()</Expr>
+            <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:EndDate/text()</Expr>
+          </DisplayBlock>
+        </Field-->
+        <Field>
+          <Name>Validity period start date</Name>
+          <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:StartDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Validity period end date</Name>
+          <Expr>/*:Catalogue/cac:ValidityPeriod/cbc:EndDate/text()</Expr>
+        </Field>
+      </Key>
+    </Fields>
+    <Party>
+      <Stakeholders>
+        <Primary block="/*:Catalogue/cac:ProviderParty" title="Catalogue provider">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:ProviderParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <Expr>cac:ProviderParty/cbc:EndpointID/text()</Expr>
+            <Expr>cac:ProviderParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:ProviderParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:ProviderParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ProviderParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:ProviderParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:ProviderParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+        </Primary>
+        <Primary block="/*:Catalogue/cac:ReceiverParty" title="Catalogue receiver">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:ReceiverParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <Expr>cac:ReceiverParty/cbc:EndpointID/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:ReceiverParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+        </Primary>
+        <Secondary block="/*:Catalogue/cac:SellerSupplierParty/cac:Party" title="Supplier">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:Party/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:Party/cbc:EndpointID/text()</Expr>
+            <Expr>cac:Party/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:Party/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:Party/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:Party/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:Party/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Secondary>
+        <Secondary block="/*:Catalogue/cac:ContractorCustomerParty/cac:Party" title="Contractor / Customer">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:Party/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:Party/cbc:EndpointID/text()</Expr>
+            <Expr>cac:Party/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Secondary>
+      </Stakeholders>
+    </Party>
+    <Section>
+      <Fields>
+        <Table foreach="/*:Catalogue/cac:CatalogueLine" title="Catalogue lines" hasRowDetail="true">
+          <Field>
+            <Name>Line ID</Name>
+            <Expr>cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Item</Name>
+            <Expr>cac:Item/cbc:Name/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Seller item ID</Name>
+            <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Price</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:RequiredItemLocationQuantity/cac:Price/cbc:PriceAmount/text()</Expr>
+              <Expr as="text">cac:RequiredItemLocationQuantity/cac:Price/cbc:PriceAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Details</Name>
+            <DisplayBlock>
+              <Expr>cbc:ActionCode/text()</Expr>
+              <Expr>cbc:OrderableIndicator/text()</Expr>
+              <Expr>cbc:OrderableUnit/text()</Expr>
+              <Expr>cbc:ContentUnitQuantity/text()</Expr>
+              <Expr>cbc:OrderQuantityIncrementNumeric/text()</Expr>
+              <Expr>cbc:MinimumOrderQuantity/text()</Expr>
+              <Expr>cbc:MaximumOrderQuantity/text()</Expr>
+              <Expr>cbc:WarrantyInformation/text()</Expr>
+              <Expr>cac:LineValidityPeriod/cbc:StartDate/text()</Expr>
+              <Expr>cac:LineValidityPeriod/cbc:EndDate/text()</Expr>
+              <Expr>cac:RequiredItemLocationQuantity/cbc:LeadTimeMeasure/text()</Expr>
+              <Expr>cac:Item/cbc:Description/text()</Expr>
+              <Expr>cac:Item/cbc:BrandName/text()</Expr>
+              <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:ManufacturerParty/cac:PartyName/cbc:Name/text()</Expr>
+              <Expr>cac:Item/cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
+              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:Percent/text()</Expr>
+              <Expr>cac:Item/cac:ClassifiedTaxCategory/cac:TaxScheme/cbc:ID/text()</Expr>
+            </DisplayBlock>
+            <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+              <Field>
+                <Name><Expr>cbc:Name/text()</Expr></Name>
+                <Expr>cbc:Value/text()</Expr>
+              </Field>
+            </Table>
+            <Table foreach="cac:Item/cac:Certificate" headerPosition="horizontal">
+              <Field>
+                <Name>Certificate</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cbc:CertificateType/text()</Expr>
+                  <Expr>cbc:ID/text()</Expr>
+                  <Expr>cbc:Remarks/text()</Expr>
+                </DisplayBlock>
+              </Field>
+            </Table>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>
