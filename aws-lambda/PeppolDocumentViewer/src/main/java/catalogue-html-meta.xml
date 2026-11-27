@@ -128,33 +128,111 @@
             <Expr>cac:Item/cbc:Name/text()</Expr>
           </Field>
           <Field>
+            <Name>Standard item ID</Name>
+            <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
             <Name>Seller item ID</Name>
             <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
           </Field>
           <Field>
+            <Name>Orderable Unit</Name>
+            <Expr>cbc:OrderableUnit/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Content Unit Quantity</Name>
+            <Expr>cbc:ContentUnitQuantity/text()</Expr>
+          </Field>
+          <Field>
             <Name>Details</Name>
-            <DisplayBlock>
-              <Expr>cbc:ActionCode/text()</Expr>
-              <Expr>cbc:OrderableIndicator/text()</Expr>
-              <Expr>cbc:OrderableUnit/text()</Expr>
-              <Expr>cbc:ContentUnitQuantity/text()</Expr>
-              <Expr>cbc:OrderQuantityIncrementNumeric/text()</Expr>
-              <Expr>cbc:MinimumOrderQuantity/text()</Expr>
-              <Expr>cbc:MaximumOrderQuantity/text()</Expr>
-              <Expr>cbc:WarrantyInformation/text()</Expr>
-              <Expr>cac:LineValidityPeriod/cbc:StartDate/text()</Expr>
-              <Expr>cac:LineValidityPeriod/cbc:EndDate/text()</Expr>
-              <Expr>cac:Item/cbc:Description/text()</Expr>
-              <Expr>cac:Item/cbc:BrandName/text()</Expr>
-              <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:ManufacturerParty/cac:PartyName/cbc:Name/text()</Expr>
-              <Expr>cac:Item/cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
-              <Expr>cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
-              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:Percent/text()</Expr>
-              <Expr>cac:Item/cac:ClassifiedTaxCategory/cac:TaxScheme/cbc:ID/text()</Expr>
-            </DisplayBlock>
+            <Form title="Catalogue line details">
+              <Field>
+                <Name>Action code</Name>
+                <Expr>cbc:ActionCode/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Orderable</Name>
+                <Expr>cbc:OrderableIndicator/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Order quantity increment</Name>
+                <Expr>cbc:OrderQuantityIncrementNumeric/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Minimum order quantity</Name>
+                <Expr>cbc:MinimumOrderQuantity/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Maximum order quantity</Name>
+                <Expr>cbc:MaximumOrderQuantity/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Warranty information</Name>
+                <Expr>cbc:WarrantyInformation/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Validity start date</Name>
+                <Expr>cac:LineValidityPeriod/cbc:StartDate/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Validity end date</Name>
+                <Expr>cac:LineValidityPeriod/cbc:EndDate/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Item description</Name>
+                <Expr>cac:Item/cbc:Description/text()</Expr>
+              </Field>
+            </Form>
+            <Table foreach="cac:Item" title="Item details">
+              <Field>
+                <Name>Brand name</Name>
+                <Expr>cbc:BrandName/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Manufacturer item ID</Name>
+                <Expr>cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Manufacturer</Name>
+                <Expr>cac:ManufacturerParty/cac:PartyName/cbc:Name/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Country of origin</Name>
+                <Expr>cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
+              </Field>
+            </Table>
+            <Table foreach="cac:Item/cac:ClassifiedTaxCategory" title="Classified tax categories">
+              <Field>
+                <Name>Tax category</Name>
+                <Expr>cbc:ID/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Tax percent</Name>
+                <Expr>cbc:Percent/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Tax scheme</Name>
+                <Expr>cac:TaxScheme/cbc:ID/text()</Expr>
+              </Field>
+            </Table>
+            <Table foreach="cac:Item/cac:CommodityClassification" title="Commodity classifications">
+              <Field>
+                <Name>Classification code</Name>
+                <Expr>cbc:ItemClassificationCode/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Scheme</Name>
+                <Expr as="text">string(cbc:ItemClassificationCode/@listID)</Expr>
+              </Field>
+              <Field>
+                <Name>List version ID</Name>
+                <Expr as="text">string(cbc:ItemClassificationCode/@listVersionID)</Expr>
+              </Field>
+              <Field>
+                <Name>Classification name</Name>
+                <Expr as="text">string(cbc:ItemClassificationCode/@name)</Expr>
+              </Field>
+            </Table>
             <Table foreach="cac:RequiredItemLocationQuantity" title="Price and quantity tiers">
               <Field>
                 <Name>Price</Name>

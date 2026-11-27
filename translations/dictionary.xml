@@ -11,7 +11,7 @@
     <entry key="Carrier">Transportör</entry>
     <entry key="Delivery">Leverans</entry>
     <entry key="Despatch Location">Avsändande plats</entry>
-    <entry key="Expand or Collapse All">Expandera eller kollapsa alla</entry>
+    <entry key="Expand or Collapse All">Visa detaljer</entry>
     <entry key="ID">Id</entry>
     <entry key="Item">Produkt</entry>
     <entry key="Quantity">Kvantitet</entry>
@@ -37,7 +37,7 @@
     <entry key="Carrier">Carrier</entry>
     <entry key="Delivery">Delivery</entry>
     <entry key="Despatch Location">Despatch Location</entry>
-    <entry key="Expand or Collapse All">Expand or Collapse All</entry>
+    <entry key="Expand or Collapse All">Show Details</entry>
     <entry key="ID">ID</entry>
     <entry key="Item">Item</entry>
     <entry key="Quantity">Quantity</entry>

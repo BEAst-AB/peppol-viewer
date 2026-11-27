@@ -515,6 +515,11 @@
                       </xsl:for-each>
                     </th>
                     <td>
+                      <xsl:for-each select="doc:Form">
+                        <xsl:apply-templates select=".">
+                          <xsl:with-param name="context" select="$varContext"/>
+                        </xsl:apply-templates>
+                      </xsl:for-each>
                       <xsl:for-each select="doc:Expr[text()!='']">
                         <xsl:evaluate xpath="." context-item="$varContext"/>
                       </xsl:for-each>
@@ -535,6 +540,11 @@
                           </button>
                           <div class="line-detail-panel">
                             <div class="line-detail-panel-inner">
+                              <xsl:for-each select="doc:Form">
+                                <xsl:apply-templates select=".">
+                                  <xsl:with-param name="context" select="$varContext"/>
+                                </xsl:apply-templates>
+                              </xsl:for-each>
                               <xsl:for-each select="doc:Expr[text()!='']">
                                 <xsl:evaluate xpath="." context-item="$varContext"/>
                               </xsl:for-each>
@@ -552,6 +562,11 @@
                           </div>
                         </xsl:when>
                         <xsl:otherwise>
+                          <xsl:for-each select="doc:Form">
+                            <xsl:apply-templates select=".">
+                              <xsl:with-param name="context" select="$varContext"/>
+                            </xsl:apply-templates>
+                          </xsl:for-each>
                           <xsl:for-each select="doc:Expr[text()!='']">
                             <xsl:evaluate xpath="." context-item="$varContext"/>
                           </xsl:for-each>
