@@ -167,24 +167,69 @@
   		    <Expr>cac:OrderLineReference/cbc:LineID/text()</Expr>
 		  </Field>
 		  <Field>
-		    <Name translate="true">Standard</Name>
-  		    <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
-		  </Field>
-		  <Field>
-		    <Name translate="true">Seller</Name>
-  		    <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
-		  </Field>
-		  <Field>
-		    <Name translate="true">Manufacturer</Name>
-  		    <Expr>cac:Item/cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
-		  </Field>
-		  <Field>
-		    <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
-			  <Field>
-				<Name translate="true"><Expr>cbc:Name/text()</Expr></Name>
-				<Expr>cbc:Value/text()</Expr>
-			  </Field>
-			</Table>
+		    <Name translate="true">Item details</Name>
+		    <Form title="Item details" columns="1">
+		      <Field>
+		        <Name translate="true">Item description</Name>
+		        <Expr>cac:Item/cbc:Description/text()</Expr>
+		      </Field>
+		      <Table foreach="cac:Item" title="Item identifiers">
+		        <Field>
+		          <Name translate="true">Buyer item ID</Name>
+		          <Expr>cac:BuyersItemIdentification/cbc:ID/text()</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Seller item ID</Name>
+		          <Expr>cac:SellersItemIdentification/cbc:ID/text()</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Manufacturer item ID</Name>
+		          <Expr>cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Standard item ID</Name>
+		          <Expr>cac:StandardItemIdentification/cbc:ID/text()</Expr>
+		        </Field>
+		      </Table>
+		      <Table foreach="cac:Item/cac:CommodityClassification" title="Commodity classifications">
+		        <Field>
+		          <Name translate="true">Classification code</Name>
+		          <Expr>cbc:ItemClassificationCode/text()</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Scheme</Name>
+		          <Expr as="text">string(cbc:ItemClassificationCode/@listID)</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">List version ID</Name>
+		          <Expr as="text">string(cbc:ItemClassificationCode/@listVersionID)</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Classification name</Name>
+		          <Expr as="text">string(cbc:ItemClassificationCode/@name)</Expr>
+		        </Field>
+		      </Table>
+		      <Table foreach="cac:Item/cac:ClassifiedTaxCategory" title="Classified tax categories">
+		        <Field>
+		          <Name translate="true">Tax category</Name>
+		          <Expr>cbc:ID/text()</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Tax percent</Name>
+		          <Expr>cbc:Percent/text()</Expr>
+		        </Field>
+		        <Field>
+		          <Name translate="true">Tax scheme</Name>
+		          <Expr>cac:TaxScheme/cbc:ID/text()</Expr>
+		        </Field>
+		      </Table>
+		      <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+		        <Field>
+		          <Name translate="true"><Expr>cbc:Name/text()</Expr></Name>
+		          <Expr>cbc:Value/text()</Expr>
+		        </Field>
+		      </Table>
+		    </Form>
 		  </Field>
 		</Table>
       </Fields>

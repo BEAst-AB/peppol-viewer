@@ -397,19 +397,72 @@
               <Expr>cac:InvoicePeriod/cbc:EndDate/text()</Expr>
               <Expr>cac:OrderLineReference/cbc:LineID/text()</Expr>
               <Expr>cac:DocumentReference/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cbc:Description/text()</Expr>
-              <Expr>cac:Item/cac:BuyersItemIdentification/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
-              <Expr>cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
-              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:ID/text()</Expr>
-              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:Percent/text()</Expr>
-              <Expr>cac:Item/cac:ClassifiedTaxCategory/cac:TaxScheme/cbc:ID/text()</Expr>
               <Expr>cac:Price/cbc:BaseQuantity/text()</Expr>
               <Expr>cac:Price/cac:AllowanceCharge/cbc:Amount/text()</Expr>
               <Expr>cac:Price/cac:AllowanceCharge/cbc:BaseAmount/text()</Expr>
             </DisplayBlock>
+            <Form title="Item details" columns="1">
+              <Field>
+                <Name>Item description</Name>
+                <Expr>cac:Item/cbc:Description/text()</Expr>
+              </Field>
+              <Table foreach="cac:Item" title="Item identifiers">
+                <Field>
+                  <Name>Buyer item ID</Name>
+                  <Expr>cac:BuyersItemIdentification/cbc:ID/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Seller item ID</Name>
+                  <Expr>cac:SellersItemIdentification/cbc:ID/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Standard item ID</Name>
+                  <Expr>cac:StandardItemIdentification/cbc:ID/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Country of origin</Name>
+                  <Expr>cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
+                </Field>
+              </Table>
+              <Table foreach="cac:Item/cac:CommodityClassification" title="Commodity classifications">
+                <Field>
+                  <Name>Classification code</Name>
+                  <Expr>cbc:ItemClassificationCode/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Scheme</Name>
+                  <Expr as="text">string(cbc:ItemClassificationCode/@listID)</Expr>
+                </Field>
+                <Field>
+                  <Name>List version ID</Name>
+                  <Expr as="text">string(cbc:ItemClassificationCode/@listVersionID)</Expr>
+                </Field>
+                <Field>
+                  <Name>Classification name</Name>
+                  <Expr as="text">string(cbc:ItemClassificationCode/@name)</Expr>
+                </Field>
+              </Table>
+              <Table foreach="cac:Item/cac:ClassifiedTaxCategory" title="Classified tax categories">
+                <Field>
+                  <Name>Tax category</Name>
+                  <Expr>cbc:ID/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Tax percent</Name>
+                  <Expr>cbc:Percent/text()</Expr>
+                </Field>
+                <Field>
+                  <Name>Tax scheme</Name>
+                  <Expr>cac:TaxScheme/cbc:ID/text()</Expr>
+                </Field>
+              </Table>
+              <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+                <Field>
+                  <Name><Expr>cbc:Name/text()</Expr></Name>
+                  <Expr>cbc:Value/text()</Expr>
+                </Field>
+              </Table>
+            </Form>
             <Table foreach="cac:AllowanceCharge">
               <Field>
                 <Name>Charge indicator</Name>
@@ -432,12 +485,6 @@
                   <Expr>cbc:BaseAmount/text()</Expr>
                   <Expr as="text">cbc:BaseAmount/@currencyID</Expr>
                 </DisplayBlock>
-              </Field>
-            </Table>
-            <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
-              <Field>
-                <Name><Expr>cbc:Name/text()</Expr></Name>
-                <Expr>cbc:Value/text()</Expr>
               </Field>
             </Table>
           </Field>

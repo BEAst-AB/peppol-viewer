@@ -324,11 +324,136 @@
           </Field>
           <Field>
             <Name>Goods</Name>
-            <DisplayBlock>
-              <Expr>cac:GoodsItem/cbc:Description/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cbc:Name/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
-            </DisplayBlock>
+            <Table foreach="cac:GoodsItem" title="Goods items">
+              <Field>
+                <Name>Description</Name>
+                <Expr>cbc:Description/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Item details</Name>
+                <Form title="Item details" columns="1">
+                  <Field>
+                    <Name>Item name</Name>
+                    <Expr>cac:Item/cbc:Name/text()</Expr>
+                  </Field>
+                  <Field>
+                    <Name>Item description</Name>
+                    <Expr>cac:Item/cbc:Description/text()</Expr>
+                  </Field>
+                  <Table foreach="cac:Item" title="Item identifiers">
+                    <Field>
+                      <Name>Buyer item ID</Name>
+                      <Expr>cac:BuyersItemIdentification/cbc:ID/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Seller item ID</Name>
+                      <Expr>cac:SellersItemIdentification/cbc:ID/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Manufacturer item ID</Name>
+                      <Expr>cac:ManufacturersItemIdentification/cbc:ID/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Standard item ID</Name>
+                      <Expr>cac:StandardItemIdentification/cbc:ID/text()</Expr>
+                    </Field>
+                  </Table>
+                  <Table foreach="cac:Item/cac:CommodityClassification" title="Commodity classifications">
+                    <Field>
+                      <Name>Classification code</Name>
+                      <Expr>cbc:ItemClassificationCode/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Scheme</Name>
+                      <Expr as="text">string(cbc:ItemClassificationCode/@listID)</Expr>
+                    </Field>
+                    <Field>
+                      <Name>List version ID</Name>
+                      <Expr as="text">string(cbc:ItemClassificationCode/@listVersionID)</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Classification name</Name>
+                      <Expr as="text">string(cbc:ItemClassificationCode/@name)</Expr>
+                    </Field>
+                  </Table>
+                  <Table foreach="cac:Item/cac:ClassifiedTaxCategory" title="Classified tax categories">
+                    <Field>
+                      <Name>Tax category</Name>
+                      <Expr>cbc:ID/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Tax percent</Name>
+                      <Expr>cbc:Percent/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Tax scheme</Name>
+                      <Expr>cac:TaxScheme/cbc:ID/text()</Expr>
+                    </Field>
+                  </Table>
+                  <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+                    <Field>
+                      <Name><Expr>cbc:Name/text()</Expr></Name>
+                      <Expr>cbc:Value/text()</Expr>
+                    </Field>
+                  </Table>
+                  <Table foreach="cac:Item/cac:HazardousItem" title="Hazardous item details">
+                    <Field>
+                      <Name>Hazard ID</Name>
+                      <Expr>cbc:ID/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Additional information</Name>
+                      <Expr>cbc:AdditionalInformation/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>UNDG code</Name>
+                      <Expr>cbc:UNDGCode/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Technical name</Name>
+                      <Expr>cbc:TechnicalName/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Category name</Name>
+                      <Expr>cbc:CategoryName/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Hazardous category code</Name>
+                      <Expr>cbc:HazardousCategoryCode/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Hazard class ID</Name>
+                      <Expr>cbc:HazardClassID/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Net weight</Name>
+                      <DisplayBlock format="singleLine">
+                        <Expr>cbc:NetWeightMeasure/text()</Expr>
+                        <Expr as="text">string(cbc:NetWeightMeasure/@unitCode)</Expr>
+                      </DisplayBlock>
+                    </Field>
+                    <Field>
+                      <Name>Net volume</Name>
+                      <DisplayBlock format="singleLine">
+                        <Expr>cbc:NetVolumeMeasure/text()</Expr>
+                        <Expr as="text">string(cbc:NetVolumeMeasure/@unitCode)</Expr>
+                      </DisplayBlock>
+                    </Field>
+                    <Field>
+                      <Name>Packing criteria</Name>
+                      <Expr>cac:HazardousGoodsTransit/cbc:PackingCriteriaCode/text()</Expr>
+                    </Field>
+                    <Field>
+                      <Name>Emergency temperature</Name>
+                      <DisplayBlock format="singleLine">
+                        <Expr>cac:EmergencyTemperature/cbc:Measure/text()</Expr>
+                        <Expr as="text">string(cac:EmergencyTemperature/cbc:Measure/@unitCode)</Expr>
+                      </DisplayBlock>
+                    </Field>
+                  </Table>
+                </Form>
+              </Field>
+            </Table>
           </Field>
           <Field>
             <Name>Transport equipment</Name>
@@ -353,25 +478,6 @@
               <Expr>cac:MaximumTemperature/cbc:AttributeID/text()</Expr>
               <Expr>cac:MaximumTemperature/cbc:Measure/text()</Expr>
               <Expr as="text">string(cac:MaximumTemperature/cbc:Measure/@unitCode)</Expr>
-            </DisplayBlock>
-          </Field>
-          <Field>
-            <Name>Hazardous item details</Name>
-            <DisplayBlock>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:ID/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:AdditionalInformation/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:UNDGCode/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:TechnicalName/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:CategoryName/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:HazardousCategoryCode/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:HazardClassID/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetWeightMeasure/text()</Expr>
-              <Expr as="text">string(cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetWeightMeasure/@unitCode)</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetVolumeMeasure/text()</Expr>
-              <Expr as="text">string(cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetVolumeMeasure/@unitCode)</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cac:HazardousGoodsTransit/cbc:PackingCriteriaCode/text()</Expr>
-              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cac:EmergencyTemperature/cbc:Measure/text()</Expr>
-              <Expr as="text">string(cac:GoodsItem/cac:Item/cac:HazardousItem/cac:EmergencyTemperature/cbc:Measure/@unitCode)</Expr>
             </DisplayBlock>
           </Field>
         </Table>
