@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:ApplicationResponse-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Catalogue Response</WindowTitle>
+  <PageTitle>Catalogue Response</PageTitle>
+  <DocumentTitle>/*:ApplicationResponse/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Catalogue response">
+        <Field>
+          <Name>Response ID</Name>
+          <Expr>/*:ApplicationResponse/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Profile</Name>
+          <Expr>/*:ApplicationResponse/cbc:ProfileID/text()</Expr>
+        </Field>
+      </Form>
+      <Key>
+        <Field>
+          <Name>Issue date</Name>
+          <Expr>/*:ApplicationResponse/cbc:IssueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Issue time</Name>
+          <Expr>/*:ApplicationResponse/cbc:IssueTime/text()</Expr>
+        </Field>
+      </Key>
+    </Fields>
+    <Note>
+      <Expr>/*:ApplicationResponse/cbc:Note/text()</Expr>
+    </Note>
+    <Party>
+      <Stakeholders>
+        <Primary block="/*:ApplicationResponse/cac:SenderParty" title="Sender">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:SenderParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:SenderParty/cbc:EndpointID/text()</Expr>
+              <Expr as="text">string(cac:SenderParty/cbc:EndpointID/@schemeID)</Expr>
+            </DisplayBlock>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:SenderParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:SenderParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+        </Primary>
+        <Primary block="/*:ApplicationResponse/cac:ReceiverParty" title="Receiver">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:ReceiverParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ReceiverParty/cbc:EndpointID/text()</Expr>
+              <Expr as="text">string(cac:ReceiverParty/cbc:EndpointID/@schemeID)</Expr>
+            </DisplayBlock>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ReceiverParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:ReceiverParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+        </Primary>
+      </Stakeholders>
+    </Party>
+    <Section>
+      <Fields>
+        <Table foreach="/*:ApplicationResponse/cac:DocumentResponse" title="Catalogue responses" hasRowDetail="true">
+          <Field>
+            <Name>Response code</Name>
+            <Expr>cac:Response/cbc:ResponseCode/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Referenced document</Name>
+            <Expr>cac:DocumentReference/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Version</Name>
+            <Expr>cac:DocumentReference/cbc:VersionID/text()</Expr>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>
