@@ -5,6 +5,7 @@
   <Viewers CustomizationID="urn:fdc:peppol.eu:logistics:trns:receipt_advice:1">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/receipt-advice-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:logistics:trns:waybill:1">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/waybill-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:logistics:trns:transport_execution_plan_request:1">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/transport-execution-plan-request-html-meta.xml</Viewers>
+  <Viewers CustomizationID="urn:fdc:peppol.eu:logistics:trns:transport_execution_plan:1">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/transport-execution-plan-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:catalogue:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/catalogue-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:catalogue_response:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/catalogue-response-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:order_agreement:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/order-agreement-html-meta.xml</Viewers>
