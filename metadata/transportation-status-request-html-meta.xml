@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:TransportationStatusRequest-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Transportation Status Request</WindowTitle>
+  <PageTitle>Transportation Status Request</PageTitle>
+  <DocumentTitle>/*:TransportationStatusRequest/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Status request">
+        <Field>
+          <Name>Profile</Name>
+          <Expr>/*:TransportationStatusRequest/cbc:ProfileID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Profile execution ID</Name>
+          <Expr>/*:TransportationStatusRequest/cbc:ProfileExecutionID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Description</Name>
+          <Expr>/*:TransportationStatusRequest/cbc:Description/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Shipping order ID</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:TransportationStatusRequest/cbc:ShippingOrderID/text()</Expr>
+            <Expr as="text">string(/*:TransportationStatusRequest/cbc:ShippingOrderID/@schemeID)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Requested status type</Name>
+          <Expr>/*:TransportationStatusRequest/cbc:TransportationStatusTypeCode/text()</Expr>
+        </Field>
+      </Form>
+      <Key>
+        <Field>
+          <Name>Issue date</Name>
+          <Expr>/*:TransportationStatusRequest/cbc:IssueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Issue time</Name>
+          <Expr>/*:TransportationStatusRequest/cbc:IssueTime/text()</Expr>
+        </Field>
+      </Key>
+      <Form title="Transport execution plan reference">
+        <Field>
+          <Name>Plan ID</Name>
+          <Expr>/*:TransportationStatusRequest/cac:TransportExecutionPlanDocumentReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Plan issue date</Name>
+          <Expr>/*:TransportationStatusRequest/cac:TransportExecutionPlanDocumentReference/cbc:IssueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Plan issue time</Name>
+          <Expr>/*:TransportationStatusRequest/cac:TransportExecutionPlanDocumentReference/cbc:IssueTime/text()</Expr>
+        </Field>
+      </Form>
+    </Fields>
+    <Party>
+      <Stakeholders>
+        <Primary block="/*:TransportationStatusRequest/cac:SenderParty" title="Sender">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:SenderParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:SenderParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:SenderParty/cbc:EndpointID/text()</Expr>
+              <Expr as="text">string(cac:SenderParty/cbc:EndpointID/@schemeID)</Expr>
+            </DisplayBlock>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:SenderParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:SenderParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+            <Expr>cac:SenderParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+            <Expr>cac:SenderParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:SenderParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <Expr>cac:SenderParty/cac:PostalAddress/cac:AddressLine/cbc:Line/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:SenderParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:SenderParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+              <Expr>cac:SenderParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:SenderParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:SenderParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:SenderParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+        <Primary block="/*:TransportationStatusRequest/cac:ReceiverParty" title="Receiver">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:ReceiverParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ReceiverParty/cbc:EndpointID/text()</Expr>
+              <Expr as="text">string(cac:ReceiverParty/cbc:EndpointID/@schemeID)</Expr>
+            </DisplayBlock>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ReceiverParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:ReceiverParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+            <Expr>cac:ReceiverParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:PostalAddress/cac:AddressLine/cbc:Line/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:ReceiverParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+              <Expr>cac:ReceiverParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:ReceiverParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:ReceiverParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+      </Stakeholders>
+    </Party>
+    <Section>
+      <Fields>
+        <Form title="Consignment">
+          <Field>
+            <Name>Consignment ID</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:TransportationStatusRequest/cac:Consignment/cbc:ID/text()</Expr>
+              <Expr as="text">string(/*:TransportationStatusRequest/cac:Consignment/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+          </Field>
+        </Form>
+        <Table foreach="/*:TransportationStatusRequest/cac:Consignment/cac:TransportEvent" title="Transport events">
+          <Field>
+            <Name>Event ID</Name>
+            <Expr>cbc:IdentificationID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Event type code</Name>
+            <Expr>cbc:TransportEventTypeCode/text()</Expr>
+          </Field>
+        </Table>
+        <Table foreach="/*:TransportationStatusRequest/cac:Consignment/cac:TransportHandlingUnit" title="Transport handling units">
+          <Field>
+            <Name>Handling unit ID</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:ID/text()</Expr>
+              <Expr as="text">string(cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+    <Section>
+      <Fields>
+        <Table foreach="/*:TransportationStatusRequest/cac:DocumentReference" title="Document references">
+          <Field>
+            <Name>Document ID</Name>
+            <Expr>cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Document type code</Name>
+            <Expr>cbc:DocumentTypeCode/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Document type</Name>
+            <Expr>cbc:DocumentType/text()</Expr>
+          </Field>
+          <Field>
+            <Name>File name</Name>
+            <Expr>string(cac:Attachment/cbc:EmbeddedDocumentBinaryObject/@filename)</Expr>
+          </Field>
+          <Field>
+            <Name>External reference</Name>
+            <Expr>cac:Attachment/cac:ExternalReference/cbc:URI/text()</Expr>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>
