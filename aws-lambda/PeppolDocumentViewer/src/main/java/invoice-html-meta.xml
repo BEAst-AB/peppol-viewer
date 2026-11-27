@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:Invoice-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Invoice</WindowTitle>
+  <PageTitle>Invoice</PageTitle>
+  <DocumentTitle>/*:Invoice/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Invoice details">
+        <Field>
+          <Name>Invoice type</Name>
+          <Expr>/*:Invoice/cbc:InvoiceTypeCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Currency</Name>
+          <Expr>/*:Invoice/cbc:DocumentCurrencyCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Tax currency</Name>
+          <Expr>/*:Invoice/cbc:TaxCurrencyCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Buyer reference</Name>
+          <Expr>/*:Invoice/cbc:BuyerReference/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Accounting cost</Name>
+          <Expr>/*:Invoice/cbc:AccountingCost/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Purchase order</Name>
+          <Expr>/*:Invoice/cac:OrderReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Sales order</Name>
+          <Expr>/*:Invoice/cac:OrderReference/cbc:SalesOrderID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Preceding invoice</Name>
+          <Expr>/*:Invoice/cac:BillingReference/cac:InvoiceDocumentReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Despatch reference</Name>
+          <Expr>/*:Invoice/cac:DespatchDocumentReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Receipt reference</Name>
+          <Expr>/*:Invoice/cac:ReceiptDocumentReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Originator reference</Name>
+          <Expr>/*:Invoice/cac:OriginatorDocumentReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Contract reference</Name>
+          <Expr>/*:Invoice/cac:ContractDocumentReference/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Project reference</Name>
+          <Expr>/*:Invoice/cac:ProjectReference/cbc:ID/text()</Expr>
+        </Field>
+      </Form>
+      <Key>
+        <Field>
+          <Name>Issue date</Name>
+          <Expr>/*:Invoice/cbc:IssueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Due date</Name>
+          <Expr>/*:Invoice/cbc:DueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Tax point date</Name>
+          <Expr>/*:Invoice/cbc:TaxPointDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Invoice period start</Name>
+          <Expr>/*:Invoice/cac:InvoicePeriod/cbc:StartDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Invoice period end</Name>
+          <Expr>/*:Invoice/cac:InvoicePeriod/cbc:EndDate/text()</Expr>
+        </Field>
+      </Key>
+    </Fields>
+    <Note>
+      <Expr>/*:Invoice/cbc:Note/text()</Expr>
+    </Note>
+    <Reference>
+      <Data>
+        <Field forEach="/*:Invoice/cac:AdditionalDocumentReference">
+          <Name>cbc:DocumentDescription/text()</Name>
+          <Expr>cbc:ID/text()</Expr>
+        </Field>
+      </Data>
+    </Reference>
+    <Party>
+      <Stakeholders>
+        <Primary block="/*:Invoice/cac:AccountingSupplierParty/cac:Party" title="Seller / Supplier">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <Expr>cac:Party/cbc:EndpointID/text()</Expr>
+            <Expr>cac:Party/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:Party/cac:PartyTaxScheme/cbc:CompanyID/text()</Expr>
+            <Expr>cac:Party/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:Party/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:Party/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:Party/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:Party/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+        <Primary block="/*:Invoice/cac:AccountingCustomerParty/cac:Party" title="Buyer / Customer">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:Party/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <Expr>cac:Party/cbc:EndpointID/text()</Expr>
+            <Expr>cac:Party/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:Party/cac:PartyTaxScheme/cbc:CompanyID/text()</Expr>
+            <Expr>cac:Party/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:Party/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:Party/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:Party/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:Party/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:Party/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+        <Secondary block="/*:Invoice/cac:PayeeParty" title="Payee">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:PayeeParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:PayeeParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+            <Expr>cac:PayeeParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+          </DisplayBlock>
+        </Secondary>
+        <Secondary block="/*:Invoice/cac:TaxRepresentativeParty" title="Tax representative">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:TaxRepresentativeParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:TaxRepresentativeParty/cac:PartyTaxScheme/cbc:CompanyID/text()</Expr>
+            <Expr>cac:TaxRepresentativeParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:TaxRepresentativeParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:TaxRepresentativeParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:TaxRepresentativeParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:TaxRepresentativeParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+        </Secondary>
+        <Secondary block="/*:Invoice/cac:Delivery/cac:DeliveryParty" title="Delivery party">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:DeliveryParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:DeliveryParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:DeliveryParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:DeliveryParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Secondary>
+        <Secondary block="/*:Invoice/cac:Delivery/cac:DeliveryLocation" title="Delivery location">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:DeliveryLocation/cbc:ID/text()</Expr>
+            <Expr>cac:DeliveryLocation/cbc:Name/text()</Expr>
+            <Expr>cac:DeliveryLocation/cac:Address/cbc:StreetName/text()</Expr>
+            <Expr>cac:DeliveryLocation/cac:Address/cbc:AdditionalStreetName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:DeliveryLocation/cac:Address/cbc:CityName/text()</Expr>
+              <Expr>cac:DeliveryLocation/cac:Address/cac:Country/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:DeliveryLocation/cac:Address/cbc:PostalZone/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+        </Secondary>
+      </Stakeholders>
+    </Party>
+    <Section>
+      <Fields>
+        <Form title="Payment details">
+          <Field>
+            <Name>Payment means</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:PaymentMeans/cbc:PaymentMeansCode/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:PaymentMeans/cbc:PaymentMeansCode/@name</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Payment ID</Name>
+            <Expr>/*:Invoice/cac:PaymentMeans/cbc:PaymentID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Payment terms</Name>
+            <Expr>/*:Invoice/cac:PaymentTerms/cbc:Note/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Card account</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:PaymentMeans/cac:CardAccount/cbc:PrimaryAccountNumberID/text()</Expr>
+              <Expr>/*:Invoice/cac:PaymentMeans/cac:CardAccount/cbc:NetworkID/text()</Expr>
+              <Expr>/*:Invoice/cac:PaymentMeans/cac:CardAccount/cbc:HolderName/text()</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Payee account</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:PaymentMeans/cac:PayeeFinancialAccount/cbc:ID/text()</Expr>
+              <Expr>/*:Invoice/cac:PaymentMeans/cac:PayeeFinancialAccount/cbc:Name/text()</Expr>
+              <Expr>/*:Invoice/cac:PaymentMeans/cac:PayeeFinancialAccount/cac:FinancialInstitutionBranch/cbc:ID/text()</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Payment mandate</Name>
+            <Expr>/*:Invoice/cac:PaymentMeans/cac:PaymentMandate/cbc:ID/text()</Expr>
+          </Field>
+        </Form>
+        <Form title="Invoice totals">
+          <Field>
+            <Name>Line extension amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:LineExtensionAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:LineExtensionAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Tax exclusive amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:TaxExclusiveAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:TaxExclusiveAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Tax inclusive amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:TaxInclusiveAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:TaxInclusiveAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Allowance total</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:AllowanceTotalAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:AllowanceTotalAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Charge total</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:ChargeTotalAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:ChargeTotalAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Prepaid amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:PrepaidAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:PrepaidAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Rounding amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:PayableRoundingAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:PayableRoundingAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Payable amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:LegalMonetaryTotal/cbc:PayableAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:LegalMonetaryTotal/cbc:PayableAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Total tax amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Invoice/cac:TaxTotal/cbc:TaxAmount/text()</Expr>
+              <Expr as="text">/*:Invoice/cac:TaxTotal/cbc:TaxAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+        </Form>
+        <Table foreach="/*:Invoice/cac:AllowanceCharge" title="Allowances and charges">
+          <Field>
+            <Name>Charge</Name>
+            <Expr>cbc:ChargeIndicator/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Reason</Name>
+            <Expr>cbc:AllowanceChargeReason/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:Amount/text()</Expr>
+              <Expr as="text">cbc:Amount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Base amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:BaseAmount/text()</Expr>
+              <Expr as="text">cbc:BaseAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Tax category</Name>
+            <Expr>cac:TaxCategory/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Tax percent</Name>
+            <Expr>cac:TaxCategory/cbc:Percent/text()</Expr>
+          </Field>
+        </Table>
+        <Table foreach="/*:Invoice/cac:TaxTotal/cac:TaxSubtotal" title="Tax breakdown">
+          <Field>
+            <Name>Taxable amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:TaxableAmount/text()</Expr>
+              <Expr as="text">cbc:TaxableAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Tax amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:TaxAmount/text()</Expr>
+              <Expr as="text">cbc:TaxAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Tax category</Name>
+            <Expr>cac:TaxCategory/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Tax percent</Name>
+            <Expr>cac:TaxCategory/cbc:Percent/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Exemption reason code</Name>
+            <Expr>cac:TaxCategory/cbc:TaxExemptionReasonCode/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Exemption reason</Name>
+            <Expr>cac:TaxCategory/cbc:TaxExemptionReason/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Tax scheme</Name>
+            <Expr>cac:TaxCategory/cac:TaxScheme/cbc:ID/text()</Expr>
+          </Field>
+        </Table>
+        <Table foreach="/*:Invoice/cac:InvoiceLine" title="Invoice lines" hasRowDetail="true">
+          <Field>
+            <Name>Line ID</Name>
+            <Expr>cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Item</Name>
+            <Expr>cac:Item/cbc:Name/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Quantity</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:InvoicedQuantity/text()</Expr>
+              <Expr as="text">cbc:InvoicedQuantity/@unitCode</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Line amount</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:LineExtensionAmount/text()</Expr>
+              <Expr as="text">cbc:LineExtensionAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Price</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:Price/cbc:PriceAmount/text()</Expr>
+              <Expr as="text">cac:Price/cbc:PriceAmount/@currencyID</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Details</Name>
+            <DisplayBlock>
+              <Expr>cbc:Note/text()</Expr>
+              <Expr>cbc:AccountingCost/text()</Expr>
+              <Expr>cac:InvoicePeriod/cbc:StartDate/text()</Expr>
+              <Expr>cac:InvoicePeriod/cbc:EndDate/text()</Expr>
+              <Expr>cac:OrderLineReference/cbc:LineID/text()</Expr>
+              <Expr>cac:DocumentReference/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cbc:Description/text()</Expr>
+              <Expr>cac:Item/cac:BuyersItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:SellersItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:StandardItemIdentification/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:OriginCountry/cbc:IdentificationCode/text()</Expr>
+              <Expr>cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
+              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:ID/text()</Expr>
+              <Expr>cac:Item/cac:ClassifiedTaxCategory/cbc:Percent/text()</Expr>
+              <Expr>cac:Item/cac:ClassifiedTaxCategory/cac:TaxScheme/cbc:ID/text()</Expr>
+              <Expr>cac:Price/cbc:BaseQuantity/text()</Expr>
+              <Expr>cac:Price/cac:AllowanceCharge/cbc:Amount/text()</Expr>
+              <Expr>cac:Price/cac:AllowanceCharge/cbc:BaseAmount/text()</Expr>
+            </DisplayBlock>
+            <Table foreach="cac:AllowanceCharge">
+              <Field>
+                <Name>Charge indicator</Name>
+                <Expr>cbc:ChargeIndicator/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Reason</Name>
+                <Expr>cbc:AllowanceChargeReason/text()</Expr>
+              </Field>
+              <Field>
+                <Name>Amount</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cbc:Amount/text()</Expr>
+                  <Expr as="text">cbc:Amount/@currencyID</Expr>
+                </DisplayBlock>
+              </Field>
+              <Field>
+                <Name>Base amount</Name>
+                <DisplayBlock format="singleLine">
+                  <Expr>cbc:BaseAmount/text()</Expr>
+                  <Expr as="text">cbc:BaseAmount/@currencyID</Expr>
+                </DisplayBlock>
+              </Field>
+            </Table>
+            <Table foreach="cac:Item/cac:AdditionalItemProperty" headerPosition="horizontal">
+              <Field>
+                <Name><Expr>cbc:Name/text()</Expr></Name>
+                <Expr>cbc:Value/text()</Expr>
+              </Field>
+            </Table>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>

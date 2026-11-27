@@ -5,4 +5,5 @@
   <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:order_agreement:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/order-agreement-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:order:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/order-html-meta.xml</Viewers>
   <Viewers CustomizationID="urn:fdc:peppol.eu:poacc:trns:order_response:3">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/order-response-html-meta.xml</Viewers>
+  <Viewers CustomizationID="urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0">https://raw.githubusercontent.com/BEAst-AB/peppol-viewer/refs/heads/main/metadata/invoice-html-meta.xml</Viewers>
 </Peppol>
