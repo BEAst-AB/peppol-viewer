@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BusinessDocument xmlns="https://beast.se/xmltools">
+  <Namespaces>
+    <Namespace prefix="ubl">urn:oasis:names:specification:ubl:schema:xsd:Waybill-2</Namespace>
+    <Namespace prefix="cac">urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2</Namespace>
+    <Namespace prefix="cbc">urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2</Namespace>
+  </Namespaces>
+  <WindowTitle>Waybill</WindowTitle>
+  <PageTitle>Waybill</PageTitle>
+  <DocumentTitle>/*:Waybill/cbc:ID/text()</DocumentTitle>
+  <TranslationXmlFile>dictionary.xml</TranslationXmlFile>
+  <Section>
+    <Fields>
+      <Form title="Waybill">
+        <Field>
+          <Name>Waybill type</Name>
+          <Expr>/*:Waybill/cbc:Name/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Carrier assigned ID</Name>
+          <Expr>/*:Waybill/cbc:CarrierAssignedID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Shipping order ID</Name>
+          <Expr>/*:Waybill/cbc:ShippingOrderID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Profile</Name>
+          <Expr>/*:Waybill/cbc:ProfileID/text()</Expr>
+        </Field>
+      </Form>
+      <Key>
+        <Field>
+          <Name>Issue date</Name>
+          <Expr>/*:Waybill/cbc:IssueDate/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Issue time</Name>
+          <Expr>/*:Waybill/cbc:IssueTime/text()</Expr>
+        </Field>
+      </Key>
+      <Form title="Shipment and consignment">
+        <Field>
+          <Name>Shipment ID</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cbc:ID/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cbc:ID/@schemeID)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Shipment information</Name>
+          <Expr>/*:Waybill/cac:Shipment/cbc:Information/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Consignment ID</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:ID/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cac:Consignment/cbc:ID/@schemeID)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Consignee assigned ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:ConsigneeAssignedID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Consignor assigned ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:ConsignorAssignedID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Gross weight</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:GrossWeightMeasure/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cac:Consignment/cbc:GrossWeightMeasure/@unitCode)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Gross volume</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:GrossVolumeMeasure/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cac:Consignment/cbc:GrossVolumeMeasure/@unitCode)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Loading length</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:LoadingLengthMeasure/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cac:Consignment/cbc:LoadingLengthMeasure/@unitCode)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Hazardous goods</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:HazardousRiskIndicator/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Handling unit quantity</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cbc:TotalTransportHandlingUnitQuantity/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cac:Consignment/cbc:TotalTransportHandlingUnitQuantity/@unitCode)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Departure country</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cac:OriginalDepartureCountry/cbc:IdentificationCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Destination country</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cac:FinalDestinationCountry/cbc:IdentificationCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Payment terms</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cac:PaymentTerms/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Payment terms note</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Consignment/cac:PaymentTerms/cbc:Note/text()</Expr>
+        </Field>
+      </Form>
+      <Form title="Delivery">
+        <Field>
+          <Name>Tracking ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cbc:TrackingID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Delivery location</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:DeliveryLocation/cbc:Name/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Delivery location ID</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:DeliveryLocation/cbc:ID/text()</Expr>
+            <Expr as="text">string(/*:Waybill/cac:Shipment/cac:Delivery/cac:DeliveryLocation/cbc:ID/@schemeID)</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Estimated delivery start</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:EstimatedDeliveryPeriod/cbc:StartDate/text()</Expr>
+            <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:EstimatedDeliveryPeriod/cbc:StartTime/text()</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Estimated delivery end</Name>
+          <DisplayBlock format="singleLine">
+            <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:EstimatedDeliveryPeriod/cbc:EndDate/text()</Expr>
+            <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:EstimatedDeliveryPeriod/cbc:EndTime/text()</Expr>
+          </DisplayBlock>
+        </Field>
+        <Field>
+          <Name>Delivery terms</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:DeliveryTerms/cbc:ID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Special delivery terms</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:DeliveryTerms/cbc:SpecialTerms/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Delivery terms location</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:Delivery/cac:DeliveryTerms/cac:DeliveryLocation/cbc:ID/text()</Expr>
+        </Field>
+      </Form>
+      <Form title="Transport stage">
+        <Field>
+          <Name>Transport mode</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:ShipmentStage/cbc:TransportModeCode/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Aircraft ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:AirTransport/cbc:AircraftID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Road license plate</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:RoadTransport/cbc:LicensePlateID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Train ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:RailTransport/cbc:TrainID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Rail car ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:RailTransport/cbc:RailCarID/text()</Expr>
+        </Field>
+        <Field>
+          <Name>Vessel ID</Name>
+          <Expr>/*:Waybill/cac:Shipment/cac:ShipmentStage/cac:TransportMeans/cac:MaritimeTransport/cbc:VesselID/text()</Expr>
+        </Field>
+      </Form>
+    </Fields>
+    <Party>
+      <Stakeholders>
+        <Primary block="/*:Waybill/cac:ConsignorParty" title="Consignor">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:ConsignorParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:ConsignorParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ConsignorParty/cbc:EndpointID/text()</Expr>
+              <Expr as="text">string(cac:ConsignorParty/cbc:EndpointID/@schemeID)</Expr>
+            </DisplayBlock>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ConsignorParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:ConsignorParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+            <Expr>cac:ConsignorParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+            <Expr>cac:ConsignorParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:ConsignorParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <Expr>cac:ConsignorParty/cac:PostalAddress/cac:AddressLine/cbc:Line/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ConsignorParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:ConsignorParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+              <Expr>cac:ConsignorParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:ConsignorParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:ConsignorParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:ConsignorParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+        <Primary block="/*:Waybill/cac:CarrierParty" title="Carrier">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:CarrierParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:CarrierParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:CarrierParty/cbc:EndpointID/text()</Expr>
+              <Expr as="text">string(cac:CarrierParty/cbc:EndpointID/@schemeID)</Expr>
+            </DisplayBlock>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:CarrierParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:CarrierParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+            <Expr>cac:CarrierParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+            <Expr>cac:CarrierParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:CarrierParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <Expr>cac:CarrierParty/cac:PostalAddress/cac:AddressLine/cbc:Line/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:CarrierParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:CarrierParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+              <Expr>cac:CarrierParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+            </DisplayBlock>
+            <Expr>cac:CarrierParty/cac:Person/cac:IdentityDocumentReference/cbc:DocumentType/text()</Expr>
+            <Expr>cac:CarrierParty/cac:Person/cac:IdentityDocumentReference/cbc:ID/text()</Expr>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:CarrierParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:CarrierParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:CarrierParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Primary>
+        <Secondary block="/*:Waybill/cac:FreightForwarderParty" title="Freight forwarder">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:FreightForwarderParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:FreightForwarderParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:FreightForwarderParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:FreightForwarderParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+            <Expr>cac:FreightForwarderParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+            <Expr>cac:FreightForwarderParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:FreightForwarderParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <Expr>cac:FreightForwarderParty/cac:PostalAddress/cac:AddressLine/cbc:Line/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:FreightForwarderParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:FreightForwarderParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+              <Expr>cac:FreightForwarderParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:FreightForwarderParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:FreightForwarderParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:FreightForwarderParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Secondary>
+        <Secondary block="/*:Waybill/cac:Shipment/cac:Consignment/cac:ConsigneeParty" title="Consignee">
+          <DisplayBlock wrap="cellRow">
+            <Expr format="bold">cac:ConsigneeParty/cac:PartyName/cbc:Name/text()</Expr>
+            <Expr>cac:ConsigneeParty/cac:PartyLegalEntity/cbc:RegistrationName/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ConsigneeParty/cac:PartyIdentification/cbc:ID/text()</Expr>
+              <Expr as="text">string(cac:ConsigneeParty/cac:PartyIdentification/cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+            <Expr>cac:ConsigneeParty/cac:PartyLegalEntity/cbc:CompanyID/text()</Expr>
+            <Expr>cac:ConsigneeParty/cac:PostalAddress/cbc:StreetName/text()</Expr>
+            <Expr>cac:ConsigneeParty/cac:PostalAddress/cbc:AdditionalStreetName/text()</Expr>
+            <Expr>cac:ConsigneeParty/cac:PostalAddress/cac:AddressLine/cbc:Line/text()</Expr>
+            <DisplayBlock format="singleLine">
+              <Expr>cac:ConsigneeParty/cac:PostalAddress/cbc:CityName/text()</Expr>
+              <Expr>cac:ConsigneeParty/cac:PostalAddress/cbc:PostalZone/text()</Expr>
+              <Expr>cac:ConsigneeParty/cac:PostalAddress/cac:Country/cbc:IdentificationCode/text()</Expr>
+            </DisplayBlock>
+          </DisplayBlock>
+          <NewLine/>
+          <DisplayBlock wrap="cellRow">
+            <Expr>cac:ConsigneeParty/cac:Contact/cbc:Name/text()</Expr>
+            <Expr>cac:ConsigneeParty/cac:Contact/cbc:Telephone/text()</Expr>
+            <Expr>cac:ConsigneeParty/cac:Contact/cbc:ElectronicMail/text()</Expr>
+          </DisplayBlock>
+        </Secondary>
+      </Stakeholders>
+    </Party>
+    <Section>
+      <Fields>
+        <Table foreach="/*:Waybill/cac:Shipment/cac:Consignment/cac:TransportHandlingUnit" title="Transport handling units" hasRowDetail="true">
+          <Field>
+            <Name>Handling unit ID</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>cbc:ID/text()</Expr>
+              <Expr as="text">string(cbc:ID/@schemeID)</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Type</Name>
+            <Expr>cbc:TransportHandlingUnitTypeCode/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Handling</Name>
+            <DisplayBlock>
+              <Expr>cbc:HandlingCode/text()</Expr>
+              <Expr>cbc:HandlingInstructions/text()</Expr>
+              <Expr>cbc:ShippingMarks/text()</Expr>
+              <Expr>cbc:HazardousRiskIndicator/text()</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Goods</Name>
+            <DisplayBlock>
+              <Expr>cac:GoodsItem/cbc:Description/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cbc:Name/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:CommodityClassification/cbc:ItemClassificationCode/text()</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Transport equipment</Name>
+            <DisplayBlock>
+              <Expr>cac:TransportEquipment/cbc:ID/text()</Expr>
+              <Expr>cac:TransportEquipment/cbc:TransportEquipmentTypeCode/text()</Expr>
+              <Expr>cac:TransportEquipment/cbc:SizeTypeCode/text()</Expr>
+              <Expr>cac:TransportEquipment/cbc:RefrigerationOnIndicator/text()</Expr>
+              <Expr>cac:TransportEquipment/cbc:Description/text()</Expr>
+              <Expr>cac:TransportEquipment/cbc:PowerIndicator/text()</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Measurements and temperatures</Name>
+            <DisplayBlock>
+              <Expr>cac:MeasurementDimension/cbc:AttributeID/text()</Expr>
+              <Expr>cac:MeasurementDimension/cbc:Measure/text()</Expr>
+              <Expr as="text">string(cac:MeasurementDimension/cbc:Measure/@unitCode)</Expr>
+              <Expr>cac:MinimumTemperature/cbc:AttributeID/text()</Expr>
+              <Expr>cac:MinimumTemperature/cbc:Measure/text()</Expr>
+              <Expr as="text">string(cac:MinimumTemperature/cbc:Measure/@unitCode)</Expr>
+              <Expr>cac:MaximumTemperature/cbc:AttributeID/text()</Expr>
+              <Expr>cac:MaximumTemperature/cbc:Measure/text()</Expr>
+              <Expr as="text">string(cac:MaximumTemperature/cbc:Measure/@unitCode)</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Hazardous item details</Name>
+            <DisplayBlock>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:ID/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:AdditionalInformation/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:UNDGCode/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:TechnicalName/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:CategoryName/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:HazardousCategoryCode/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:HazardClassID/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetWeightMeasure/text()</Expr>
+              <Expr as="text">string(cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetWeightMeasure/@unitCode)</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetVolumeMeasure/text()</Expr>
+              <Expr as="text">string(cac:GoodsItem/cac:Item/cac:HazardousItem/cbc:NetVolumeMeasure/@unitCode)</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cac:HazardousGoodsTransit/cbc:PackingCriteriaCode/text()</Expr>
+              <Expr>cac:GoodsItem/cac:Item/cac:HazardousItem/cac:EmergencyTemperature/cbc:Measure/text()</Expr>
+              <Expr as="text">string(cac:GoodsItem/cac:Item/cac:HazardousItem/cac:EmergencyTemperature/cbc:Measure/@unitCode)</Expr>
+            </DisplayBlock>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+    <Section>
+      <Fields>
+        <Table foreach="/*:Waybill/cac:DocumentReference" title="Documents">
+          <Field>
+            <Name>Document ID</Name>
+            <Expr>cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Document type code</Name>
+            <Expr>cbc:DocumentTypeCode/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Document type</Name>
+            <Expr>cbc:DocumentType/text()</Expr>
+          </Field>
+          <Field>
+            <Name>File name</Name>
+            <Expr>string(cac:Attachment/cbc:EmbeddedDocumentBinaryObject/@filename)</Expr>
+          </Field>
+          <Field>
+            <Name>External reference</Name>
+            <Expr>cac:Attachment/cac:ExternalReference/cbc:URI/text()</Expr>
+          </Field>
+        </Table>
+      </Fields>
+    </Section>
+    <Section>
+      <Fields>
+        <Form title="Signature">
+          <Field>
+            <Name>Signature ID</Name>
+            <Expr>/*:Waybill/cac:Signature/cbc:ID/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Validation date</Name>
+            <Expr>/*:Waybill/cac:Signature/cbc:ValidationDate/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Validation time</Name>
+            <Expr>/*:Waybill/cac:Signature/cbc:ValidationTime/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Signatory</Name>
+            <Expr>/*:Waybill/cac:Signature/cac:SignatoryParty/cac:PartyName/cbc:Name/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Signatory person</Name>
+            <DisplayBlock format="singleLine">
+              <Expr>/*:Waybill/cac:Signature/cac:SignatoryParty/cac:Person/cbc:FirstName/text()</Expr>
+              <Expr>/*:Waybill/cac:Signature/cac:SignatoryParty/cac:Person/cbc:FamilyName/text()</Expr>
+            </DisplayBlock>
+          </Field>
+          <Field>
+            <Name>Signatory role</Name>
+            <Expr>/*:Waybill/cac:Signature/cac:SignatoryParty/cac:Person/cbc:JobTitle/text()</Expr>
+          </Field>
+          <Field>
+            <Name>Signature document</Name>
+            <Expr>string(/*:Waybill/cac:Signature/cac:DigitalSignatureAttachment/cbc:EmbeddedDocumentBinaryObject/@filename)</Expr>
+          </Field>
+        </Form>
+      </Fields>
+    </Section>
+  </Section>
+</BusinessDocument>
